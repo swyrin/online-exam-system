@@ -16,7 +16,7 @@ public class Course {
     
     @Id
     @Column(name = "course_id")
-    private long CourseID ;
+    private String CourseID;
 
     @Column(name = "name")
     private String Name;

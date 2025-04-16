@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Course {
+    
     @Id
     @Column(name = "course_id")
     private String CourseID;
@@ -25,4 +26,6 @@ public class Course {
 
     @ManyToMany(mappedBy = "EnrolledCourses")
     private List<Person> Attendees;
+
+    
 }

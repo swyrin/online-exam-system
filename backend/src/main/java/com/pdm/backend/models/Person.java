@@ -22,6 +22,9 @@ public class Person {
     @Column(name = "birth_date")
     public Date BirthDate;
 
+    @Column(name = "age")
+    public int Age;
+
     @Column(name = "first_name")
     public String FirstName;
 

@@ -10,9 +10,9 @@ public interface CourseServices {
     Course createCourse(Course course);
     
     List<Course> findAll();
-    Optional<Course> findOne(long course_id);
-    boolean isExist(long course_id);
+    Optional<Course> findOne(String course_id);
+    boolean isExist(String course_id);
 
-    Course partialUpdate(long course_id , Course courses);
-    void delete(long course_id);
+    Course partialUpdate(String course_id , Course courses);
+    void delete(String course_id);
 }

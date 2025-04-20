@@ -19,5 +19,7 @@ public interface PersonServices {
     boolean isExist(String person_id);
     Person partialUpdatedPerson(String person_id , Person persons);
     void delete (String person_id);
+    Person assignCourseToPerson(String person_id , String course_id);
+    Person assignExamToPerson(String person_id , long exam_id);
 
 }

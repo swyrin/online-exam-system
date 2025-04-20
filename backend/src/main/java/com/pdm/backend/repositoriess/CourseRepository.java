@@ -8,7 +8,7 @@ import com.pdm.backend.models.Course;
 
 @Repository
 
-public interface CourseRepository extends CrudRepository<Course , Long>{
+public interface CourseRepository extends CrudRepository<Course , String>{
 
     // Iterable<Course> CourseIdlessthan(long CourseID);
     // @Query ("SELECT a from Course a where a.age > ?1 ")

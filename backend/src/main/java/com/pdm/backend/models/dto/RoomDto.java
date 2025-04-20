@@ -2,6 +2,8 @@ package com.pdm.backend.models.dto;
 
 import java.util.List;
 
+import com.pdm.backend.models.Course;
+import com.pdm.backend.models.Exam;
 import com.pdm.backend.models.Person;
 
 import lombok.AllArgsConstructor;
@@ -9,17 +11,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-
 @Data
-@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-
-public class coursesDto {
-
-    private String CourseID;
-    private String Name;
-    private String Abbreviation;
+@Builder
+public class RoomDto {
+    public String RoomID;
+    private Long headcount;
     private List<Person> Attendees;
-
+    private List<Exam> AssignedExams;
+    private List<Course> AssignedCourses;
 }

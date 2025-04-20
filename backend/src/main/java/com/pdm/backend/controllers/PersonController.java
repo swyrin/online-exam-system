@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pdm.backend.models.Exam;
 import com.pdm.backend.models.Person;
 import com.pdm.backend.models.dto.personDto;
+import com.pdm.backend.services.CourseServices;
+import com.pdm.backend.services.ExamServices;
 import com.pdm.backend.services.PersonServices;
 
 import com.pdm.backend.mappers.Mapper;
@@ -27,10 +30,15 @@ public class PersonController {
 
     private PersonServices personServices ;
     private Mapper<Person , personDto> personMapper;
+    private CourseServices courseServices;
+    private ExamServices examServices;
 
-    public PersonController(PersonServices personServices , Mapper<Person , personDto> personMapper){
+    public PersonController(PersonServices personServices , Mapper<Person , personDto> personMapper ,CourseServices courseServices , ExamServices examServices
+    ){
         this.personServices = personServices;
         this.personMapper = personMapper;
+        this.courseServices = courseServices;
+        this.examServices = examServices;
     }
 
 
@@ -92,5 +100,44 @@ public class PersonController {
        return new ResponseEntity<>(HttpStatus.NO_CONTENT) ;
 
     }
+
+
+    //for assigned course to person 
+    @PutMapping(path = "/persons/{person_id}/courses/{course_id}")
+    public ResponseEntity<personDto> assignCoursesToPerson(
+         @PathVariable("person_id") String person_id,
+         @PathVariable("course_id") String course_id,
+         @RequestBody personDto personDto ) {
+            
+            Boolean foundCourseID = courseServices.isExist(course_id);
+            Boolean foundPersonID = personServices.isExist(person_id);
+            if((foundCourseID && foundPersonID)){
+                Person person =personServices.assignCourseToPerson(person_id , course_id);
+                return new ResponseEntity<>(personMapper.mapto(person) , HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+         }
+
+         //for assign Exam to Person 
+    @PutMapping(path ="/persons/{person_id}/exams/{exam_id}")
+    public ResponseEntity<personDto> assignExamsToPerson(
+        @PathVariable("person_id") String person_id,
+        @PathVariable("exam_id") long exam_id,
+        @RequestBody personDto personDto){
+              boolean foundPersonID = personServices.isExist(person_id);
+              boolean foundExamID = examServices.isExist(exam_id);
+              if(foundExamID && foundPersonID){
+                 Person person = personServices.assignExamToPerson(person_id, exam_id);
+                 return new ResponseEntity<>(personMapper.mapto(person) , HttpStatus.OK);
+              }
+              else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+              }
+
+        }
+    
+        
+
 
 }

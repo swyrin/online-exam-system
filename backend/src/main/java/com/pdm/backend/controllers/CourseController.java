@@ -52,7 +52,7 @@ public class CourseController {
     }
 
     @GetMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> getCourse(@PathVariable("course_id") long course_id , coursesDto coursesDto ){
+    public ResponseEntity<coursesDto> getCourse(@PathVariable("course_id") String course_id, coursesDto coursesDto ){
 
         
         Optional<Course> foundCourse= courseServices.findOne(course_id);
@@ -63,22 +63,22 @@ public class CourseController {
 
     }
 
-    @PutMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> fullUpdate(@PathVariable("course_id") Long course_id , @RequestBody  coursesDto course)
-    {
-           if(!courseServices.isExist(course_id)){
-              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-           }
+    // @PutMapping(path = "/courses/{course_id}")
+    // public ResponseEntity<coursesDto> fullUpdate(@PathVariable("course_id") String course_id , @RequestBody  coursesDto course)
+    // {
+    //        if(!courseServices.isExist(course_id)){
+    //           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //        }
 
-           course.setCourseID(course_id);
-           Course courseEntity = courseMapper.mapfrom(course);
-           Course savedCourse = courseServices.createCourse(courseEntity);
-           coursesDto coursedto = courseMapper.mapto(savedCourse);
-           return new ResponseEntity<>(coursedto , HttpStatus.OK);
-    }
+    //        course.setCourseID(course_id);
+    //        Course courseEntity = courseMapper.mapfrom(course);
+    //        Course savedCourse = courseServices.createCourse(courseEntity);
+    //        coursesDto coursedto = courseMapper.mapto(savedCourse);
+    //        return new ResponseEntity<>(coursedto , HttpStatus.OK);
+    // }
 
     @PatchMapping(path = "/courses/ {course_id}")
-    public ResponseEntity<coursesDto> partialUpdate(@PathVariable("course_id") long course_id , @RequestBody coursesDto coursedto)
+    public ResponseEntity<coursesDto> partialUpdate(@PathVariable("course_id") String course_id ,  @RequestBody coursesDto coursedto)
     {
 
         if(!courseServices.isExist(course_id)){
@@ -94,7 +94,7 @@ public class CourseController {
     }
 
     @DeleteMapping(path= "/courses/{course_id}")
-    public ResponseEntity<coursesDto> delete(@PathVariable("course_id") long course_id)
+    public ResponseEntity<coursesDto> delete(@PathVariable("course_id") String course_id)
     {
         courseServices.delete(course_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

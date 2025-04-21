@@ -1,5 +1,6 @@
 package com.pdm.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pdm.backend.enums.HumanGender;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,6 +50,10 @@ public class Person {
     @OneToOne
     @JoinColumn(name = "role", referencedColumnName = "role_id")
     public Role Role;
+    
+    @JsonIgnore
+    @ManyToMany(mappedBy = "Attendees")
+    public List<Room> roomAttended;
 
     @ManyToMany
     @JoinTable(

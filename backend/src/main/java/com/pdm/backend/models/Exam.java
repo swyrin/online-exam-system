@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Builder
 @Table(name = "exams")
@@ -25,10 +27,12 @@ public class Exam {
 
     @ManyToOne
     private TestType ExamType;
-
+      
+    @JsonIgnore
     @ManyToMany(mappedBy = "AssignedExams")
     private List<Person> Attendees;
-
+      
+    @JsonIgnore
     @ManyToMany(mappedBy = "AssignedExams")
     private List<Room> Rooms;
 }

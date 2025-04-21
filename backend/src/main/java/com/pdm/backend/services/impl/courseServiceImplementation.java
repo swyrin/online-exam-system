@@ -37,18 +37,18 @@ public class courseServiceImplementation implements CourseServices {
     }
 
     @Override 
-    public Optional<Course> findOne(long course_id)
+    public Optional<Course> findOne(String course_id)
     {
       return courseRepository.findById(course_id);
     }
 
     @Override 
-    public boolean isExist(long course_id){
+    public boolean isExist(String course_id){
        return courseRepository.existsById(course_id);
     }
 
     @Override 
-    public Course partialUpdate(long course_id , Course courses){
+    public Course partialUpdate(String course_id , Course courses){
         courses.setCourseID(course_id);
 
         return courseRepository.findById(course_id).map(existingCourse ->{
@@ -59,7 +59,7 @@ public class courseServiceImplementation implements CourseServices {
     }
 
     @Override
-    public void delete(long course_id ){
+    public void delete(String course_id ){
        courseRepository.deleteById(course_id);
     }
     

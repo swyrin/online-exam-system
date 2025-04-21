@@ -9,7 +9,11 @@ import java.util.stream.StreamSupport;
 import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
 import org.springframework.stereotype.Service;
 
+import com.pdm.backend.models.Course;
+import com.pdm.backend.models.Exam;
 import com.pdm.backend.models.Person;
+import com.pdm.backend.repositoriess.CourseRepository;
+import com.pdm.backend.repositoriess.ExamRepository;
 import com.pdm.backend.repositoriess.PersonRepository;
 import com.pdm.backend.services.PersonServices;
 
@@ -18,9 +22,13 @@ public class PersonServiceImplementation implements PersonServices{
 
 
     private PersonRepository personRepository ;
+    private CourseRepository courseRepository;
+    private ExamRepository examRepository;
 
-    public PersonServiceImplementation(PersonRepository personRepository){
+    public PersonServiceImplementation(PersonRepository personRepository , CourseRepository courseRepository , ExamRepository examRepository){
         this.personRepository = personRepository;
+        this.courseRepository = courseRepository;
+        this.examRepository = examRepository;
     }
 
     @Override
@@ -62,6 +70,29 @@ public class PersonServiceImplementation implements PersonServices{
     @Override
     public void delete(String person_id){
         personRepository.deleteById(person_id);
+    }
+
+    @Override
+    public Person assignCourseToPerson(String person_id , String course_id){
+        List<Course> courseEnrolled = null;
+        Person personEntity = personRepository.findById(person_id).get();
+        Course courseEntity = courseRepository.findById(course_id).get();
+        courseEnrolled = personEntity.getEnrolledCourses();
+        courseEnrolled.add(courseEntity);
+        personEntity.setEnrolledCourses(courseEnrolled);
+        return personRepository.save(personEntity);
+
+    }
+
+    @Override 
+    public Person assignExamToPerson(String person_id , long exam_id){
+        List<Exam> examAssigned = null;
+        Person personEntity = personRepository.findById(person_id).get();
+        Exam examEntity = examRepository.findById(exam_id).get();
+        examAssigned = personEntity.getAssignedExams();
+        examAssigned.add(examEntity);
+        personEntity.setAssignedExams(examAssigned);
+        return personRepository.save(personEntity);
     }
 }
     

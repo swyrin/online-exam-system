@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Builder
 @Table(name = "courses")
@@ -23,9 +25,13 @@ public class Course {
 
     @Column(name = "abbreviation")
     private String Abbreviation;
-
+    
+    @JsonIgnore
     @ManyToMany(mappedBy = "EnrolledCourses")
     private List<Person> Attendees;
-
+    
+    @JsonIgnore
+    @ManyToMany(mappedBy = "AssignedCourses")
+    private List<Room> roomAssigned;
     
 }

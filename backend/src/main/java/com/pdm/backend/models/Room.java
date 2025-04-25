@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -26,7 +27,7 @@ public class Room {
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id")
     )
-    private List<Person> Attendees;
+    private Set<Person> Attendees;
 
     @ManyToMany
     @JoinTable(
@@ -34,7 +35,7 @@ public class Room {
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "exam_id")
     )
-    private List<Exam> AssignedExams;
+    private Set<Exam> AssignedExams;
 
     @ManyToMany
     @JoinTable(
@@ -42,5 +43,5 @@ public class Room {
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private List<Course> AssignedCourses;
+    private Set<Course> AssignedCourses;
 }

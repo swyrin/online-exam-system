@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,15 +51,24 @@ public class RoomController {
     @PutMapping(path = "/rooms/{room_id}")
     public ResponseEntity<RoomDto> create(@PathVariable("room_id") String room_id , RoomDto roomDto){
         Room roomEntity = roomMapper.mapfrom(roomDto);
+        Boolean foundRoomID = roomServices.isExist(room_id);
         Room savedRoomEntity = roomServices.saveRoom(room_id, roomEntity);
-        return new ResponseEntity<>(roomMapper.mapto(savedRoomEntity) , HttpStatus.CREATED);
+        RoomDto savedRoomDto = roomMapper.mapto(savedRoomEntity);
+
+        if(foundRoomID){
+            return new ResponseEntity<>(savedRoomDto ,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(savedRoomDto , HttpStatus.CREATED);
+        }
+       
     }
 
     @GetMapping(path = "/rooms")
-    public List<RoomDto> get(){
-        List<Room> result = roomServices.findAll();
-        return result.stream().map(roomMapper::mapto).collect(Collectors.toList());
-    }
+   public Page<RoomDto> RoomLists(Pageable pageable){
+       Page<Room> rooms = roomServices.findAll(pageable);
+       return rooms.map(roomMapper::mapto);
+   }
 
     @GetMapping(path = "/rooms/{room_id}")
     public ResponseEntity<RoomDto> getRoom(@PathVariable("room_id") String room_id , @RequestBody RoomDto roomDto){
@@ -71,21 +85,7 @@ public class RoomController {
         }
     }
 
-    // @PutMapping (path = "/rooms/{room_id}")
-    // public ResponseEntity<RoomDto> fullUpdated(@PathVariable("room_id") String room_id , RoomDto roomDto){
-             
-    //       boolean isExistRoom = roomServices.isExist(room_id);
-
-    //       if(!isExistRoom)
-    //       {
-    //          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //       }
-
-    //       roomDto.setRoomID(room_id);
-    //       Room roomEntity = roomMapper.mapfrom(roomDto);
-    //       Room savedRoomEntity = roomServices.saveRoom(room_id, roomEntity);
-    //      return new ResponseEntity<>(roomMapper.mapto(savedRoomEntity) , HttpStatus.OK);
-    // }
+   
 
     @PatchMapping(path = "/rooms/{room_id}")
     public ResponseEntity<RoomDto> partialUpdatedRoom(@PathVariable("room_id") String room_id , @RequestBody RoomDto roomDto){
@@ -104,11 +104,13 @@ public class RoomController {
     }
 
     @DeleteMapping(path ="/rooms/{room_id}")
-    public ResponseEntity delete(@PathVariable("room_id") String room_id){
+    public ResponseEntity<RoomDto> delete(@PathVariable("room_id") String room_id){
         roomServices.delete(room_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
+   //assign exam to room
     @PutMapping (path = "/rooms/{room_id}/exams/{exam_id}")
     public ResponseEntity<RoomDto> assignExamsToRoom(
         @PathVariable("room_id") String room_id ,
@@ -120,6 +122,45 @@ public class RoomController {
         if(foundExamID && foundRoomID){
             Room room = roomServices.assignExamToRoom(room_id, exam_id);
             return new ResponseEntity<>(roomMapper.mapto(room) , HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //assign person to room
+    @PutMapping (path = "/rooms/{room_id}/persons/{person_id}")
+    public ResponseEntity<RoomDto> assignPersonsToRoom(
+        @PathVariable("room_id") String room_id ,
+        @PathVariable("person_id") String person_id,
+        @RequestBody RoomDto roomDto
+    )
+    {
+        Room room = roomMapper.mapfrom(roomDto);
+        boolean foundRoomID = roomServices.isExist(room_id);
+        boolean foundPersonID = personServices.isExist(person_id);
+        
+        if(foundPersonID && foundRoomID){
+            Room assignedRoom = roomServices.assignPersonToRoom(room_id, person_id , room);
+            return new ResponseEntity<>(roomMapper.mapto(assignedRoom) , HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping(path = "/rooms/{room_id}/courses/{course_id}")
+    public ResponseEntity<RoomDto> assignCoursesToRoom(
+        @PathVariable("room_id") String room_id,
+        @PathVariable("course_id") String course_id,
+        @RequestBody RoomDto roomDto
+    ){
+        Room room = roomMapper.mapfrom(roomDto);
+        boolean foundRoomID = roomServices.isExist(room_id);
+        boolean foundCourseID = courseServices.isExist(course_id);
+
+        if(foundCourseID && foundRoomID){
+            Room assignedRoom = roomServices.assignCourseToRoom(room_id, course_id, room);
+            return new ResponseEntity<>(roomMapper.mapto(assignedRoom) , HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

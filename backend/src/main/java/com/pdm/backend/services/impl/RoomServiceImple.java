@@ -3,14 +3,21 @@ package com.pdm.backend.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Exam;
+import com.pdm.backend.models.Person;
 import com.pdm.backend.models.Room;
+import com.pdm.backend.repositoriess.CourseRepository;
 import com.pdm.backend.repositoriess.ExamRepository;
+import com.pdm.backend.repositoriess.PersonRepository;
 import com.pdm.backend.repositoriess.RoomRepository;
 import com.pdm.backend.services.RoomServices;
 
@@ -18,10 +25,14 @@ import com.pdm.backend.services.RoomServices;
 public class RoomServiceImple implements RoomServices {
       private RoomRepository roomRepository;
       private ExamRepository examRepository;
+      private PersonRepository personRepository;
+      private CourseRepository courseRepository;
       
-      public RoomServiceImple (RoomRepository roomRepository , ExamRepository examRepository){
+      public RoomServiceImple (RoomRepository roomRepository , ExamRepository examRepository , PersonRepository personRepository , CourseRepository courseRepository){
          this.roomRepository = roomRepository;
          this.examRepository = examRepository;
+         this.personRepository = personRepository;
+         this.courseRepository = courseRepository;
       }
 
       @Override
@@ -36,8 +47,8 @@ public class RoomServiceImple implements RoomServices {
       }
 
       @Override
-      public List<Room> findAll(){
-         return StreamSupport.stream(roomRepository.findAll().spliterator(), false).collect(Collectors.toList());
+      public Page<Room> findAll(Pageable pageable){
+         return roomRepository.findAll(pageable);
       }
 
       @Override
@@ -64,13 +75,39 @@ public class RoomServiceImple implements RoomServices {
 
       @Override
       public Room assignExamToRoom(String room_id , long exam_id){
-         List<Exam> exams = null;
+         Set<Exam> exams = null;
          Room roomEntity = roomRepository.findById(room_id).get();
          Exam examEntity = examRepository.findById(exam_id).get();
          exams = roomEntity.getAssignedExams();
          exams.add(examEntity);
          roomEntity.setAssignedExams(exams);
          return roomRepository.save(roomEntity);
+      }
+
+      @Override
+      public Room assignPersonToRoom(String room_id , String person_id , Room room){
+         Set<Person> persons = null;
+         room.setRoomID(room_id);
+         room = roomRepository.findById(room_id).get();
+         Person personEntity = personRepository.findById(person_id).get();
+         persons = room.getAttendees();
+         persons.add(personEntity);
+         room.setAttendees(persons);
+         return roomRepository.save(room);
+         
+      
+      }
+
+      @Override
+      public Room assignCourseToRoom(String room_id , String course_id , Room room){
+         Set<Course> courses = null;
+         room.setRoomID(room_id);
+         room = roomRepository.findById(room_id).get();
+         Course courseEntity = courseRepository.findById(course_id).get();
+         courses = room.getAssignedCourses();
+         courses.add(courseEntity);
+         room.setAssignedCourses(courses);
+         return roomRepository.save(room);
       }
 
 }

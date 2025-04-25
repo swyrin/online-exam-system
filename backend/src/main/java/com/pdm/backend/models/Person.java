@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -47,13 +49,11 @@ public class Person {
     @Column(name = "gender")
     public HumanGender Gender;
 
-    @OneToOne
-    @JoinColumn(name = "role", referencedColumnName = "role_id")
-    public Role Role;
+   
     
     @JsonIgnore
     @ManyToMany(mappedBy = "Attendees")
-    public List<Room> roomAttended;
+    public Set<Room> roomAttended;
 
     @ManyToMany
     @JoinTable(
@@ -61,7 +61,7 @@ public class Person {
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    public List<Course> EnrolledCourses;
+    public Set<Course> EnrolledCourses ;
 
     @ManyToMany
     @JoinTable(
@@ -69,5 +69,5 @@ public class Person {
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "exam_id")
     )
-    private List<Exam> AssignedExams;
+    private Set<Exam> AssignedExams;
 }

@@ -2,11 +2,14 @@ package com.pdm.backend.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pdm.backend.models.Course;
@@ -38,8 +41,8 @@ public class PersonServiceImplementation implements PersonServices{
     }
 
     @Override 
-    public List<Person> findAll(){
-          return StreamSupport.stream(personRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public Page<Person> findAll(Pageable pageable){
+        return personRepository.findAll(pageable);
     }
 
     @Override 
@@ -74,7 +77,7 @@ public class PersonServiceImplementation implements PersonServices{
 
     @Override
     public Person assignCourseToPerson(String person_id , String course_id){
-        List<Course> courseEnrolled = null;
+        Set<Course> courseEnrolled = null;
         Person personEntity = personRepository.findById(person_id).get();
         Course courseEntity = courseRepository.findById(course_id).get();
         courseEnrolled = personEntity.getEnrolledCourses();
@@ -86,7 +89,7 @@ public class PersonServiceImplementation implements PersonServices{
 
     @Override 
     public Person assignExamToPerson(String person_id , long exam_id){
-        List<Exam> examAssigned = null;
+        Set<Exam> examAssigned = null;
         Person personEntity = personRepository.findById(person_id).get();
         Exam examEntity = examRepository.findById(exam_id).get();
         examAssigned = personEntity.getAssignedExams();

@@ -37,8 +37,18 @@ public class TestTypeController {
     public ResponseEntity<TestTypeDto> CreatedTestType(@PathVariable("type_id") long type_id , @RequestBody TestTypeDto testTypeDto){
 
         TestType testType = typeMapper.mapfrom(testTypeDto);
+        Boolean foundTestTypeID = testTypeServices.isExist(type_id);
+
         TestType savedTestType = testTypeServices.saveTestType(type_id, testType);
-        return new ResponseEntity<>(typeMapper.mapto(savedTestType) , HttpStatus.CREATED);
+        TestTypeDto savedTestTypeDto = typeMapper.mapto(savedTestType);
+
+        if(foundTestTypeID){
+            return new ResponseEntity<>(savedTestTypeDto , HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(savedTestTypeDto , HttpStatus.CREATED);
+        }
+        
     }
 
     @GetMapping(path = "/types")
@@ -62,20 +72,7 @@ public class TestTypeController {
         
     }
 
-    // @PutMapping(path = "/types/{type_id}")
-    // public ResponseEntity<TestTypeDto> FullUpdate(@PathVariable("type_id") long type_id , @RequestBody TestTypeDto testTypeDto){
-
-    //     boolean found = testTypeServices.isExist(type_id);
-
-    //     if(!found){
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-
-    //     testTypeDto.setTypeID(type_id);
-    //     TestType testTypeEntity = typeMapper.mapfrom(testTypeDto);
-    //     TestType savedTestTypeEntity = testTypeServices.saveTestType(type_id, testTypeEntity);
-    //     return new ResponseEntity<>(typeMapper.mapto(savedTestTypeEntity) , HttpStatus.OK);
-    // }
+   
 
 
     @PatchMapping(path = "/types/{type_id}")

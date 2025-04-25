@@ -38,11 +38,19 @@ public class CourseController {
     }
 
    @PutMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> createCourse(@PathVariable("course_id") long course_id, @RequestBody coursesDto course)
+    public ResponseEntity<coursesDto> createCourse(@PathVariable("course_id") String course_id, @RequestBody coursesDto course)
     {
            Course courseEntity   = courseMapper.mapfrom (course);
-           Course createdCourse = courseServices.createCourse(courseEntity);
+           boolean foundCourseID = courseServices.isExist(course_id);
+           if(!foundCourseID){
+           Course createdCourse = courseServices.createCourse(course_id,courseEntity);
            return new ResponseEntity<>(courseMapper.mapto(createdCourse) , HttpStatus.CREATED);
+           }
+           else{
+              course.setCourseID(course_id);
+              Course updatedCourse = courseServices.createCourse(course_id, courseEntity);
+              return new ResponseEntity<>(courseMapper.mapto(updatedCourse) , HttpStatus.OK);
+           }
     }
 
     @GetMapping("/courses")
@@ -63,20 +71,7 @@ public class CourseController {
 
     }
 
-    // @PutMapping(path = "/courses/{course_id}")
-    // public ResponseEntity<coursesDto> fullUpdate(@PathVariable("course_id") String course_id , @RequestBody  coursesDto course)
-    // {
-    //        if(!courseServices.isExist(course_id)){
-    //           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //        }
-
-    //        course.setCourseID(course_id);
-    //        Course courseEntity = courseMapper.mapfrom(course);
-    //        Course savedCourse = courseServices.createCourse(courseEntity);
-    //        coursesDto coursedto = courseMapper.mapto(savedCourse);
-    //        return new ResponseEntity<>(coursedto , HttpStatus.OK);
-    // }
-
+   
     @PatchMapping(path = "/courses/ {course_id}")
     public ResponseEntity<coursesDto> partialUpdate(@PathVariable("course_id") String course_id ,  @RequestBody coursesDto coursedto)
     {

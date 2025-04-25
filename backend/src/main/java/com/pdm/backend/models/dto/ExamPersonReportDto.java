@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class ExamPersonReportDto {
       
     private ExamPersonKey key;
+   
     private Person person;
     private Course course;
     private Integer Grade;

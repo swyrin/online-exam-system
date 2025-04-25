@@ -4,6 +4,8 @@ package com.pdm.backend.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,9 +38,9 @@ public class ExamController {
      }
 
      @GetMapping(path = "/exams")
-     public List<ExamDto> getExamList(){
-         List<Exam> exams = examServices.findAll();
-         return exams.stream().map(examMapper::mapto).collect(Collectors.toList());
+     public Page<ExamDto> listExams(Pageable pageable){
+        Page<Exam> exams = examServices.findAll(pageable);
+        return exams.map(examMapper::mapto);
      }
 
      @GetMapping(path = "/exams/{exam_id}")
@@ -54,7 +56,7 @@ public class ExamController {
      }
 
      @DeleteMapping(path = "/exams/{exam_id}")
-     public ResponseEntity delete(@PathVariable("exam_id") long exam_id){
+     public ResponseEntity<ExamDto> delete(@PathVariable("exam_id") long exam_id){
          examServices.delete(exam_id);
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
      }

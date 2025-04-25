@@ -4,16 +4,6 @@ import styles from "./FutureOfLearning.module.css";
 const FutureOfLearning = () => {
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.logo}>Future of Learning</div>
-        <nav className={styles.nav}>
-          <a href="/">Home</a>
-          <a href="/about">About</a>
-          <a href="/courses">Courses</a>
-          <a href="/contact">Contact</a>
-        </nav>
-      </header>
-
       <section className={styles.hero}>
         <div className={styles.overlay}>
           <h1>Welcome to the Future of Learning</h1>

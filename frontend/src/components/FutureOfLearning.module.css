@@ -58,7 +58,7 @@
   width: 30%;
   padding: 20px;
   text-align: center;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -93,4 +93,8 @@
   padding: 20px;
   color: #fff;
   font-size: 14px;
+}
+.hero {
+  background-image: url("C:\Users\tykul\New folder (2)\online-exam-system\frontend\public\360_F_400776431_5JxdDYRr1mn9yISiUFMPcLtLp3zt6NA1.jpg");
+  background-size: cover;
 }

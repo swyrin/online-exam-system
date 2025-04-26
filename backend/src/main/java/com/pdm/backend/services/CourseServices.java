@@ -7,7 +7,7 @@ import com.pdm.backend.models.Course;
 
 public interface CourseServices {
 
-    Course createCourse(Course course);
+    Course createCourse(String course_id ,Course course);
     
     List<Course> findAll();
     Optional<Course> findOne(String course_id);

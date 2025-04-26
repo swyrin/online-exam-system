@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -61,9 +63,9 @@ public class PersonController {
     }
 
     @GetMapping(path = "/persons")
-    public List<personDto> PersonList(){
-        List<Person> persons = personServices.findAll();
-        return persons.stream().map(personMapper::mapto).collect(Collectors.toList());
+    public Page<personDto> PersonList(Pageable pageable){
+        Page<Person> person = personServices.findAll(pageable);
+        return person.map(personMapper::mapto);
     }
 
     @GetMapping(path= "/persons/{person_id}")

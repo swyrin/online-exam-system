@@ -25,7 +25,8 @@ public class courseServiceImplementation implements CourseServices {
     }
 
     @Override
-    public Course createCourse(Course course){
+    public Course createCourse(String course_id , Course course){
+      course.setCourseID(course_id);
       return courseRepository.save(course);
 
     }

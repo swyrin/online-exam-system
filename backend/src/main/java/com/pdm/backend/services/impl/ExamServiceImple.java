@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pdm.backend.models.Exam;
@@ -37,8 +40,8 @@ public class ExamServiceImple implements ExamServices{
     }
 
     @Override
-    public List<Exam> findAll(){
-        return StreamSupport.stream(examRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public Page<Exam> findAll(Pageable pageable){
+        return examRepository.findAll(pageable);
     }
     
     

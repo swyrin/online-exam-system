@@ -1,12 +1,14 @@
 package com.pdm.backend.mappers.imple;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.pdm.backend.mappers.Mapper;
 import com.pdm.backend.models.ExamPersonReport;
 import com.pdm.backend.models.dto.ExamPersonReportDto;
 
-public class ExamPersonReportServiceImple implements Mapper<ExamPersonReport , ExamPersonReportDto> {
+@Component
+public class ExamPersonReportMapperImple implements Mapper<ExamPersonReport , ExamPersonReportDto> {
 
 
     private ModelMapper modelMapper;

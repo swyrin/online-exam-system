@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,9 +31,9 @@ public class Exam {
       
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedExams")
-    private List<Person> Attendees;
+    private Set<Person> Attendees;
       
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedExams")
-    private List<Room> Rooms;
+    private Set<Room> Rooms;
 }

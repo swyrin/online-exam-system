@@ -39,12 +39,14 @@ public class RoleController {
          
         Role role = RoleMapper.mapfrom(roleDto);
         boolean roleExisted = roleServices.isExist(role_id);
+        Role savedRole = roleServices.saveRole(role_id, role);
+        RoleDto savedRoleDto = RoleMapper.mapto(savedRole);
+        
         if(roleExisted){
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else{
-            Role savedRole = roleServices.saveRole(role_id, role);
-            RoleDto savedRoleDto = RoleMapper.mapto(savedRole);
+           
             return new ResponseEntity<>(savedRoleDto , HttpStatus.CREATED);
         }
 

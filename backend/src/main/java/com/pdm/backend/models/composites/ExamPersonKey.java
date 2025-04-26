@@ -18,4 +18,5 @@ public class ExamPersonKey implements Serializable {
 
     @Column(name = "course_id")
    private String CourseId;
+
 }

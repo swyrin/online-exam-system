@@ -21,5 +21,6 @@ public interface PersonServices {
     void delete (String person_id);
     Person assignCourseToPerson(String person_id , String course_id);
     Person assignExamToPerson(String person_id , long exam_id);
+    Person setPersonReports(String person_id , String course_id);
 
 }

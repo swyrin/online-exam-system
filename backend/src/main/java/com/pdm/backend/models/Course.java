@@ -3,7 +3,7 @@ package com.pdm.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,5 +34,8 @@ public class Course {
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedCourses")
     private Set<Room> roomAssigned;
+
+    @OneToMany(mappedBy = "course")
+    private Set<ExamPersonReport> courseReports ;
     
 }

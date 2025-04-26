@@ -63,5 +63,10 @@ public class courseServiceImplementation implements CourseServices {
     public void delete(String course_id ){
        courseRepository.deleteById(course_id);
     }
+
+    @Override
+    public Course setCourseReports(String person_id , String course_id){
+       return null;
+    }
     
 }

@@ -97,6 +97,11 @@ public class PersonServiceImplementation implements PersonServices{
         personEntity.setAssignedExams(examAssigned);
         return personRepository.save(personEntity);
     }
+
+    @Override
+    public Person setPersonReports(String person_id , String course_id){
+        return null;
+    }
 }
     
 

@@ -2,6 +2,7 @@ package com.pdm.backend.models.composites;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Embeddable
+@EqualsAndHashCode
 public class ExamPersonKey implements Serializable {
     @Column(name = "person_id")
    private String PersonID;

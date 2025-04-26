@@ -70,4 +70,9 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "exam_id")
     )
     private Set<Exam> AssignedExams;
+     
+    
+    @OneToMany(mappedBy = "person")
+    private Set<ExamPersonReport> personReports;
+
 }

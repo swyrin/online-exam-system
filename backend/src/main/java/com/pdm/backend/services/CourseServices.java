@@ -15,4 +15,5 @@ public interface CourseServices {
 
     Course partialUpdate(String course_id , Course courses);
     void delete(String course_id);
+    Course setCourseReports(String person_id , String course_id);
 }

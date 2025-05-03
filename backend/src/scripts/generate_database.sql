@@ -1,4 +1,8 @@
-create table courses
+drop database if exists PDM;
+create database PDM;
+use PDM;
+
+create table if not exists courses
 (
     course_id    varchar(255) not null
         primary key,
@@ -6,23 +10,33 @@ create table courses
     name         varchar(255) null
 );
 
-create table persons
+create table if not exists roles
 (
-    person_id   varchar(255) not null
+    role_id bigint       not null
         primary key,
-    age         int          null,
-    birth_date  datetime(6)  null,
-    email       varchar(255) null,
-    first_name  varchar(255) null,
-    gender      tinyint      null
-        check (`gender` between 0 and 1),
-    join_date   datetime(6)  null,
-    last_name   varchar(255) null,
-    middle_name varchar(255) null,
-    phone       varchar(255) null
+    name    varchar(255) null
 );
 
-create table course_person
+create table if not exists persons
+(
+    person_id    varchar(255) not null
+        primary key,
+    age          int          null,
+    birth_date   datetime(6)  null,
+    email        varchar(255) null,
+    first_name   varchar(255) null,
+    gender       tinyint      null,
+    join_date    datetime(6)  null,
+    last_name    varchar(255) null,
+    middle_name  varchar(255) null,
+    phone        varchar(255) null,
+    role_role_id bigint       null,
+    constraint FKcxggcgte30eenqoiw89xm9dt8
+        foreign key (role_role_id) references roles (role_id),
+    check (`gender` between 0 and 1)
+);
+
+create table if not exists course_person
 (
     person_id varchar(255) not null,
     course_id varchar(255) not null,
@@ -33,7 +47,7 @@ create table course_person
         foreign key (course_id) references courses (course_id)
 );
 
-create table person_exam_report
+create table if not exists person_exam_report
 (
     grade      int          null,
     issue_date datetime(6)  null,
@@ -46,24 +60,14 @@ create table person_exam_report
         foreign key (course_id) references courses (course_id)
 );
 
-create table roles
-(
-    role_id          bigint       not null
-        primary key,
-    name             varchar(255) null,
-    person_person_id varchar(255) null,
-    constraint FKllpefsje5wl1hjl7icf7w4qk9
-        foreign key (person_person_id) references persons (person_id)
-);
-
-create table rooms
+create table if not exists rooms
 (
     room_id   varchar(255) not null
         primary key,
     headcount bigint       null
 );
 
-create table course_room
+create table if not exists course_room
 (
     room_id   varchar(255) not null,
     course_id varchar(255) not null,
@@ -74,7 +78,7 @@ create table course_room
         foreign key (course_id) references courses (course_id)
 );
 
-create table person_room_attend
+create table if not exists person_room_attend
 (
     room_id   varchar(255) not null,
     person_id varchar(255) not null,
@@ -85,7 +89,7 @@ create table person_room_attend
         foreign key (room_id) references rooms (room_id)
 );
 
-create table test_types
+create table if not exists test_types
 (
     type_id     bigint       not null
         primary key,
@@ -93,7 +97,7 @@ create table test_types
     name        varchar(255) null
 );
 
-create table exams
+create table if not exists exams
 (
     exam_id           bigint       not null
         primary key,
@@ -106,7 +110,7 @@ create table exams
         foreign key (course_course_id) references courses (course_id)
 );
 
-create table exam_room
+create table if not exists exam_room
 (
     room_id varchar(255) not null,
     exam_id bigint       not null,
@@ -117,7 +121,7 @@ create table exam_room
         foreign key (room_id) references rooms (room_id)
 );
 
-create table person_exam
+create table if not exists person_exam
 (
     person_id varchar(255) not null,
     exam_id   bigint       not null,

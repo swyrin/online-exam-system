@@ -1,12 +1,10 @@
 package com.pdm.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Builder
@@ -16,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Getter
 @Setter
 public class Course {
-    
+
     @Id
     @Column(name = "course_id")
     private String CourseID;
@@ -26,16 +24,16 @@ public class Course {
 
     @Column(name = "abbreviation")
     private String Abbreviation;
-    
+
     @JsonIgnore
     @ManyToMany(mappedBy = "EnrolledCourses")
     private Set<Person> Attendees;
-    
+
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedCourses")
     private Set<Room> roomAssigned;
 
     @OneToMany(mappedBy = "course")
-    private Set<ExamPersonReport> courseReports ;
-    
+    private Set<ExamPersonReport> courseReports;
+
 }

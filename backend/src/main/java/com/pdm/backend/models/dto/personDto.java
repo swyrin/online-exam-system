@@ -1,17 +1,16 @@
 package com.pdm.backend.models.dto;
 
-import java.util.Date;
-import java.util.List;
-
 import com.pdm.backend.enums.HumanGender;
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Exam;
 import com.pdm.backend.models.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,8 +30,6 @@ public class personDto {
     public Role role;
     public List<Course> EnrolledCourses;
     private List<Exam> AssignedExams;
-
-
 
 
 }

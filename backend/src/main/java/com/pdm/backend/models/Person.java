@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -49,8 +47,9 @@ public class Person {
     @Column(name = "gender")
     public HumanGender Gender;
 
-   
-    
+    @OneToOne
+    public Role role;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "Attendees")
     public Set<Room> roomAttended;
@@ -61,7 +60,7 @@ public class Person {
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    public Set<Course> EnrolledCourses ;
+    public Set<Course> EnrolledCourses;
 
     @ManyToMany
     @JoinTable(
@@ -70,9 +69,7 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "exam_id")
     )
     private Set<Exam> AssignedExams;
-     
-    
+
     @OneToMany(mappedBy = "person")
     private Set<ExamPersonReport> personReports;
-
 }

@@ -1,15 +1,14 @@
 package com.pdm.backend.models.dto;
 
-import java.util.List;
-
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Exam;
 import com.pdm.backend.models.Person;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor

@@ -14,9 +14,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class ExamPersonKey implements Serializable {
     @Column(name = "person_id")
-   private String PersonID;
+    private String PersonID;
 
     @Column(name = "course_id")
-   private String CourseId;
+    private String CourseId;
 
 }

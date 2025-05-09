@@ -60,13 +60,16 @@ public class TestTypeController {
 
     @GetMapping(path="/types/{type_id}")
     public ResponseEntity<TestTypeDto> GetTypeID(@PathVariable("type_id") long type_id , @RequestBody TestTypeDto testTypeDto){
-
+        
+        TestType testTypeEntity = typeMapper.mapfrom(testTypeDto);
         boolean found = testTypeServices.isExist(type_id);
+        TestType savedTestType = testTypeServices.saveTestType(type_id, testTypeEntity);
+        TestTypeDto savedTestTypeDto = typeMapper.mapto(savedTestType);
         if(!found){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(savedTestTypeDto,HttpStatus.NOT_FOUND);
         }
         else{
-            return new ResponseEntity<>(HttpStatus.FOUND);
+            return new ResponseEntity<>(savedTestTypeDto, HttpStatus.FOUND);
         }
 
         
@@ -91,7 +94,7 @@ public class TestTypeController {
 
 
     @DeleteMapping(path = "/types/{type_id}")
-    public ResponseEntity delete(@PathVariable("type_id")long type_id){
+    public ResponseEntity<TestTypeDto> delete(@PathVariable("type_id")long type_id){
         testTypeServices.delete(type_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

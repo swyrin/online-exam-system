@@ -2,10 +2,12 @@ package com.pdm.backend.models.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.pdm.backend.enums.HumanGender;
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Exam;
+import com.pdm.backend.models.ExamPersonReport;
 import com.pdm.backend.models.Role;
 
 import lombok.AllArgsConstructor;
@@ -28,9 +30,10 @@ public class personDto {
     public String Email;
     public Date JoinDate;
     public HumanGender Gender;
-    public Role role;
-    public List<Course> EnrolledCourses;
-    private List<Exam> AssignedExams;
+   
+    public Set<Course> EnrolledCourses;
+    private Set<Exam> AssignedExams;
+    private Set<ExamPersonReport> personReports;
 
 
 

@@ -10,6 +10,9 @@ import com.pdm.backend.models.dto.TestTypeDto;
 public class TestTypeMapperImple implements Mapper<TestType, TestTypeDto> {
        
     private ModelMapper modelMapper;
+    public TestTypeMapperImple(ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
+    }
 
 
     @Override

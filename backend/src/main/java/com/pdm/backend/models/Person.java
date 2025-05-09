@@ -54,7 +54,8 @@ public class Person {
     @JsonIgnore
     @ManyToMany(mappedBy = "Attendees")
     public Set<Room> roomAttended;
-
+     
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "course_person",
@@ -62,7 +63,8 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     public Set<Course> EnrolledCourses ;
-
+    
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "person_exam",
@@ -71,7 +73,7 @@ public class Person {
     )
     private Set<Exam> AssignedExams;
      
-    
+    @JsonIgnore
     @OneToMany(mappedBy = "person")
     private Set<ExamPersonReport> personReports;
 

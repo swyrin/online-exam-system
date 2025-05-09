@@ -1,8 +1,7 @@
 package com.pdm.backend.controllers;
 
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +32,14 @@ public class ExamController {
      @PutMapping(path ="/exams/{exam_id}")
      public ResponseEntity<ExamDto> createExam(@PathVariable("exam_id") long exam_id , @RequestBody ExamDto examDto){
           Exam exam = examMapper.mapfrom(examDto);
+          boolean foundExamID = examServices.isExist(exam_id);
           Exam savedExam = examServices.saveExam(exam_id, exam);
-          return new ResponseEntity<>(examMapper.mapto(savedExam) , HttpStatus.CREATED);
+          if(foundExamID){
+             return new ResponseEntity<>(examMapper.mapto(savedExam) , HttpStatus.OK);
+          }else{
+            return new ResponseEntity<>(examMapper.mapto(savedExam) , HttpStatus.CREATED);
+          }
+          
      }
 
      @GetMapping(path = "/exams")
@@ -44,7 +49,7 @@ public class ExamController {
      }
 
      @GetMapping(path = "/exams/{exam_id}")
-     public ResponseEntity<ExamDto> getExam(@PathVariable("exam_id") long exam_id , @RequestBody ExamDto examDto){
+     public ResponseEntity<ExamDto> getExam(@PathVariable("exam_id") long exam_id ,  ExamDto examDto){
         boolean foundExamID = examServices.isExist(exam_id);
         if(!foundExamID){
          return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +40,8 @@ public class CourseController {
     }
 
    @PutMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> createCourse(@PathVariable("course_id") String course_id, @RequestBody coursesDto course)
+    public ResponseEntity<coursesDto> createCourse(@PathVariable("course_id") String course_id, @RequestBody
+     coursesDto course)
     {
            Course courseEntity   = courseMapper.mapfrom (course);
            boolean foundCourseID = courseServices.isExist(course_id);
@@ -54,9 +57,9 @@ public class CourseController {
     }
 
     @GetMapping("/courses")
-    public List<coursesDto> coursesList(){
-        List<Course> courses = courseServices.findAll();
-        return courses.stream().map(courseMapper::mapto).collect(Collectors.toList());
+    public Page<coursesDto> coursesList(Pageable pageable){
+        Page<Course> courseList = courseServices.findAll(pageable);
+        return courseList.map(courseMapper::mapto);
     }
 
     @GetMapping(path = "/courses/{course_id}")

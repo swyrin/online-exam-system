@@ -10,6 +10,9 @@ import com.pdm.backend.models.dto.RoomDto;
 @Component
 public class RoomMapperImple implements Mapper<Room, RoomDto> {
      private ModelMapper modelmapper;
+     public RoomMapperImple(ModelMapper modelMapper){
+          this.modelmapper = modelMapper;
+     }
 
      @Override
      public Room mapfrom(RoomDto roomDto){

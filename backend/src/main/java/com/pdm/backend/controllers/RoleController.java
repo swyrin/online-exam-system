@@ -35,7 +35,8 @@ public class RoleController {
     }
 
     @PutMapping(path = "/roles/{role_id}")
-    public ResponseEntity<RoleDto> saveRoleEntity(@PathVariable("role_id") long role_id ,@RequestBody RoleDto roleDto){
+    public ResponseEntity<RoleDto> saveRoleEntity(@PathVariable("role_id") long role_id , @RequestBody
+    RoleDto roleDto){
          
         Role role = RoleMapper.mapfrom(roleDto);
         boolean roleExisted = roleServices.isExist(role_id);
@@ -43,7 +44,7 @@ public class RoleController {
         RoleDto savedRoleDto = RoleMapper.mapto(savedRole);
         
         if(roleExisted){
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(savedRoleDto, HttpStatus.OK);
         }
         else{
            
@@ -54,13 +55,13 @@ public class RoleController {
     }
 
     @GetMapping(path = "/roles")
-    public List<RoleDto> RoleList(@RequestBody RoleDto roleDto){
+    public List<RoleDto> RoleList( RoleDto roleDto){
         List<Role> roles = roleServices.findAll();
         return roles.stream().map(RoleMapper::mapto).collect(Collectors.toList());
     }
 
     @GetMapping(path= "/roles/{role_id}")
-    public ResponseEntity<RoleDto> getRole(@PathVariable("role_id") long role_id , RoleDto roleDto){
+    public ResponseEntity<RoleDto> getRole(@PathVariable("role_id") long role_id , @RequestBody RoleDto roleDto){
         
         Optional<Role> ExistedRole = roleServices.findOne(role_id);
         if(ExistedRole.isPresent()){

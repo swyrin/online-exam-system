@@ -1,5 +1,6 @@
 package com.pdm.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pdm.backend.models.composites.ExamPersonKey;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,12 +17,14 @@ import java.util.Date;
 public class ExamPersonReport {
     @EmbeddedId
     private ExamPersonKey key;
-
+    
+    @JsonIgnore
     @ManyToOne
     @MapsId("PersonID")
     @JoinColumn(name = "person_id")
     private Person person;
-
+     
+    @JsonIgnore
     @ManyToOne
     @MapsId("CourseId")
     @JoinColumn(name = "course_id")

@@ -1,6 +1,7 @@
 package com.pdm.backend.models.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Person;
@@ -22,8 +23,8 @@ public class ExamDto {
     private String BagCode;
     private Course Course;
    private TestType ExamType;
-    private List<Person> Attendees;
-    private List<Room> Rooms;
+    private Set<Person> Attendees;
+    private Set<Room> Rooms;
 
 
 }

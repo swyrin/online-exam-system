@@ -1,5 +1,7 @@
 package com.pdm.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +20,8 @@ public class Role {
 
     @Column(name = "name")
     private String Name;
-
+    
+   
     @ManyToOne
     private Person person;
 }

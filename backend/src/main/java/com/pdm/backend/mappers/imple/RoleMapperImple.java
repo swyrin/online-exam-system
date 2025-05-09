@@ -14,6 +14,9 @@ import com.pdm.backend.mappers.Mapper;
 public class RoleMapperImple implements Mapper<Role , RoleDto> {
 
     private ModelMapper modelMapper;
+    public RoleMapperImple(ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
+    }
     
     @Override
     public RoleDto mapto(Role role){

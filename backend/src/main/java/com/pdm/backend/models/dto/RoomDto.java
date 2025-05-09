@@ -1,6 +1,7 @@
 package com.pdm.backend.models.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Exam;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class RoomDto {
     public String RoomID;
     private Long headcount;
-    private List<Person> Attendees;
-    private List<Exam> AssignedExams;
-    private List<Course> AssignedCourses;
+    private Set<Person> Attendees;
+    private Set<Exam> AssignedExams;
+    private Set<Course> AssignedCourses;
 }

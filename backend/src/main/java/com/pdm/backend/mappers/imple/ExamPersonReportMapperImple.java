@@ -12,6 +12,9 @@ public class ExamPersonReportMapperImple implements Mapper<ExamPersonReport , Ex
 
 
     private ModelMapper modelMapper;
+    public ExamPersonReportMapperImple(ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
+    }
 
     @Override 
     public ExamPersonReport mapfrom(ExamPersonReportDto examPersonReportDto){

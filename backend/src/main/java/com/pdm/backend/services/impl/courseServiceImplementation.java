@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pdm.backend.models.Course;
@@ -33,8 +35,8 @@ public class courseServiceImplementation implements CourseServices {
 
 
     @Override 
-    public List<Course> findAll(){
-        return StreamSupport.stream(courseRepository.findAll().spliterator() , false).collect(Collectors.toList());
+    public Page<Course> findAll(Pageable pageable){
+        return courseRepository.findAll(pageable);
     }
 
     @Override 

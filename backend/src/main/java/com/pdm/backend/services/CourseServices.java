@@ -3,13 +3,16 @@ package com.pdm.backend.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.pdm.backend.models.Course;
 
 public interface CourseServices {
 
     Course createCourse(String course_id ,Course course);
     
-    List<Course> findAll();
+    Page<Course> findAll(Pageable pageable);
     Optional<Course> findOne(String course_id);
     boolean isExist(String course_id);
 

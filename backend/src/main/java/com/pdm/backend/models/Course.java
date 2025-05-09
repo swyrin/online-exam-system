@@ -34,7 +34,8 @@ public class Course {
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedCourses")
     private Set<Room> roomAssigned;
-
+     
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     private Set<ExamPersonReport> courseReports ;
     

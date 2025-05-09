@@ -49,7 +49,7 @@ public class RoomController {
     }
 
     @PutMapping(path = "/rooms/{room_id}")
-    public ResponseEntity<RoomDto> create(@PathVariable("room_id") String room_id , RoomDto roomDto){
+    public ResponseEntity<RoomDto> create(@PathVariable("room_id") String room_id , @RequestBody RoomDto roomDto){
         Room roomEntity = roomMapper.mapfrom(roomDto);
         Boolean foundRoomID = roomServices.isExist(room_id);
         Room savedRoomEntity = roomServices.saveRoom(room_id, roomEntity);

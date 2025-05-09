@@ -1,13 +1,10 @@
 package com.pdm.backend.mappers;
 
-import org.springframework.stereotype.Component;
+public interface Mapper<A, B> {
 
+    B mapto(A a);
 
-    public interface Mapper<A,B> {
+    A mapfrom(B b);
 
-        B mapto (A a);
-    
-        A mapfrom(B b );
-    
-    }
+}
 

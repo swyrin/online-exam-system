@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TestTypeDto {
-    
+
     public long TypeID;
-    public String name ;
+    public String name;
 
 
 }

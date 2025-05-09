@@ -1,6 +1,5 @@
 package com.pdm.backend.models.dto;
 
-import java.util.List;
 import java.util.Set;
 
 import com.pdm.backend.models.ExamPersonReport;
@@ -12,11 +11,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 
+
+@AllArgsConstructor
 @Data
 @Builder
 @NoArgsConstructor
+
 
 public class coursesDto {
 

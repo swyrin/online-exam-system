@@ -1,12 +1,10 @@
 package com.pdm.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Builder
@@ -28,11 +26,11 @@ public class Exam {
 
     @ManyToOne
     private TestType ExamType;
-      
+
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedExams")
     private Set<Person> Attendees;
-      
+
     @JsonIgnore
     @ManyToMany(mappedBy = "AssignedExams")
     private Set<Room> Rooms;

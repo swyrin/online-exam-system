@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Builder
 @Table(name = "roles")
@@ -20,8 +19,4 @@ public class Role {
 
     @Column(name = "name")
     private String Name;
-    
-   
-    @ManyToOne
-    private Person person;
 }

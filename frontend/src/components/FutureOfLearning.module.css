@@ -94,7 +94,8 @@
   color: #fff;
   font-size: 14px;
 }
+
 .hero {
-  background-image: url("C:\Users\tykul\New folder (2)\online-exam-system\frontend\public\360_F_400776431_5JxdDYRr1mn9yISiUFMPcLtLp3zt6NA1.jpg");
+  background-image: url("/public/360_F_400776431_5JxdDYRr1mn9yISiUFMPcLtLp3zt6NA1.jpg");
   background-size: cover;
 }

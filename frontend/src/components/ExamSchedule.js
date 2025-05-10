@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./ExamSchedule.module.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const StarRating = ({ rating, onRatingChange }) => {
   const handleClick = (value) => {
@@ -36,6 +37,9 @@ const ExamSchedule = () => {
             time: "09:00",
             status: "Upcoming",
             difficulty: 3,
+            assignedStudents: [],
+            room: "",
+            capacity: 0,
           },
           {
             id: "2",
@@ -44,6 +48,9 @@ const ExamSchedule = () => {
             time: "14:00",
             status: "Upcoming",
             difficulty: 4,
+            assignedStudents: [],
+            room: "",
+            capacity: 0,
           },
           {
             id: "3",
@@ -52,6 +59,9 @@ const ExamSchedule = () => {
             time: "11:00",
             status: "Completed",
             difficulty: 2,
+            assignedStudents: [],
+            room: "",
+            capacity: 0,
           },
         ];
   };
@@ -69,10 +79,26 @@ const ExamSchedule = () => {
     difficulty: 1,
     status: "Upcoming",
   });
-
+  const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
+  const [selectedExamId, setSelectedExamId] = useState(null);
+  const [assignmentData, setAssignmentData] = useState({
+    selectedStudents: [],
+    room: "",
+    capacity: "",
+  });
+  const availableStudents = [
+    "John Doe",
+    "Jane Smith",
+    "Michael Brown",
+    "Emily Davis",
+    "Chris Johnson",
+    "Sophia Lee",
+    "David Wilson",
+    "Amelia Moore",
+  ];
   const itemsPerPage = 5;
 
-  useEffect(() => {
+  useState(() => {
     localStorage.setItem("exams", JSON.stringify(exams));
   }, [exams]);
 
@@ -144,6 +170,15 @@ const ExamSchedule = () => {
       time: formData.time,
       difficulty: formData.difficulty,
       status: formData.status,
+      assignedStudents: editingExam
+        ? exams.find((exam) => exam.id === editingExam).assignedStudents || []
+        : [],
+      room: editingExam
+        ? exams.find((exam) => exam.id === editingExam).room || ""
+        : "",
+      capacity: editingExam
+        ? exams.find((exam) => exam.id === editingExam).capacity || 0
+        : 0,
     };
     if (editingExam) {
       setExams(exams.map((exam) => (exam.id === editingExam ? newExam : exam)));
@@ -168,13 +203,39 @@ const ExamSchedule = () => {
     );
   };
 
+  const openAssignmentModal = (examId) => {
+    setSelectedExamId(examId);
+    setAssignmentData({ selectedStudents: [], room: "", capacity: "" });
+    setAssignmentModalOpen(true);
+  };
+
+  const closeAssignmentModal = () => {
+    setAssignmentModalOpen(false);
+  };
+
+  const handleAssignmentSubmit = (e) => {
+    e.preventDefault();
+    const updatedExams = exams.map((exam) => {
+      if (exam.id === selectedExamId) {
+        return {
+          ...exam,
+          assignedStudents: assignmentData.selectedStudents,
+          room: assignmentData.room,
+          capacity: assignmentData.capacity,
+        };
+      }
+      return exam;
+    });
+    setExams(updatedExams);
+    setAssignmentModalOpen(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>Exam Schedule</h1>
         <p>Manage your exam schedule with ease</p>
       </div>
-
       <div className={styles.controls}>
         <div className={styles.searchFilter}>
           <input
@@ -203,7 +264,6 @@ const ExamSchedule = () => {
           Add New Exam
         </button>
       </div>
-
       <div className={styles.scheduleTable}>
         <table>
           <thead>
@@ -214,6 +274,9 @@ const ExamSchedule = () => {
               <th>Time</th>
               <th>Difficulty</th>
               <th>Status</th>
+              <th>Room</th>
+              <th>Capacity</th>
+              <th>Assigned Students</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -234,6 +297,11 @@ const ExamSchedule = () => {
                     {exam.status}
                   </span>
                 </td>
+                <td>{exam.room}</td>
+                <td>{exam.capacity}</td>
+                <td>
+                  {exam.assignedStudents && exam.assignedStudents.join(", ")}
+                </td>
                 <td>
                   <button
                     className={`${styles.actionBtn} ${styles.edit}`}
@@ -247,13 +315,18 @@ const ExamSchedule = () => {
                   >
                     Delete
                   </button>
+                  <button
+                    className={`${styles.actionBtn} ${styles.assign}`}
+                    onClick={() => openAssignmentModal(exam.id)}
+                  >
+                    Assign Students
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
       <div className={styles.pagination}>
         <button onClick={prevPage} disabled={currentPage === 1}>
           Previous
@@ -262,7 +335,6 @@ const ExamSchedule = () => {
           Next
         </button>
       </div>
-
       {modalOpen && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -293,7 +365,6 @@ const ExamSchedule = () => {
                   setFormData({ ...formData, time: e.target.value })
                 }
               />
-
               <div className={styles.difficultyContainer}>
                 <span className={styles.difficultyLabel}>Difficulty:</span>
                 <StarRating
@@ -317,6 +388,87 @@ const ExamSchedule = () => {
               <div className={styles.modalButtons}>
                 <button type="submit">Save</button>
                 <button type="button" onClick={closeModal}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {assignmentModalOpen && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h2>Assign Students, Room & Capacity</h2>
+            <form onSubmit={handleAssignmentSubmit}>
+              <div>
+                <label>Select Students:</label>
+                <div className={styles.studentsList}>
+                  {availableStudents.map((student) => (
+                    <div key={student}>
+                      <input
+                        type="checkbox"
+                        id={student}
+                        value={student}
+                        checked={assignmentData.selectedStudents.includes(
+                          student
+                        )}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          let updated;
+                          if (e.target.checked) {
+                            updated = [
+                              ...assignmentData.selectedStudents,
+                              value,
+                            ];
+                          } else {
+                            updated = assignmentData.selectedStudents.filter(
+                              (s) => s !== value
+                            );
+                          }
+                          setAssignmentData({
+                            ...assignmentData,
+                            selectedStudents: updated,
+                          });
+                        }}
+                      />
+                      <label htmlFor={student}>{student}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label>Room:</label>
+                <input
+                  type="text"
+                  placeholder="Room (e.g., Room A1 204)"
+                  value={assignmentData.room}
+                  onChange={(e) =>
+                    setAssignmentData({
+                      ...assignmentData,
+                      room: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label>Capacity:</label>
+                <input
+                  type="number"
+                  placeholder="Capacity (e.g., 40)"
+                  value={assignmentData.capacity}
+                  onChange={(e) =>
+                    setAssignmentData({
+                      ...assignmentData,
+                      capacity: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+              <div className={styles.modalButtons}>
+                <button type="submit">Save Assignment</button>
+                <button type="button" onClick={closeAssignmentModal}>
                   Cancel
                 </button>
               </div>

@@ -1,3 +1,5 @@
+USE PDM;
+
 -- roles: only Student and Staff
 INSERT INTO roles (role_id, name)
 VALUES

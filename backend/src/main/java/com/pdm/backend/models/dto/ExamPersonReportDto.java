@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class ExamPersonReportDto {
-
     private ExamPersonKey key;
 
     private Person person;

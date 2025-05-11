@@ -3,14 +3,14 @@ package com.pdm.backend.mappers.imple;
 
 import com.pdm.backend.mappers.Mapper;
 import com.pdm.backend.models.Course;
-import com.pdm.backend.models.dto.coursesDto;
+import com.pdm.backend.models.dto.CourseDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 
 @Component
 
-public class CourseMapperImple implements Mapper<Course, coursesDto> {
+public class CourseMapperImple implements Mapper<Course, CourseDto> {
 
     private final ModelMapper modelMapper;
 
@@ -19,13 +19,13 @@ public class CourseMapperImple implements Mapper<Course, coursesDto> {
     }
 
     @Override
-    public coursesDto mapto(Course course) {
-        return modelMapper.map(course, coursesDto.class);
+    public CourseDto mapto(Course course) {
+        return modelMapper.map(course, CourseDto.class);
 
     }
 
     @Override
-    public Course mapfrom(coursesDto coursesdto) {
+    public Course mapfrom(CourseDto coursesdto) {
         return modelMapper.map(coursesdto, Course.class);
     }
 }

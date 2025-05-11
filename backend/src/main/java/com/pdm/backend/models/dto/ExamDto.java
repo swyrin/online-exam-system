@@ -2,6 +2,8 @@ package com.pdm.backend.models.dto;
 
 
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Person;
 import com.pdm.backend.models.Room;
@@ -26,5 +28,9 @@ public class ExamDto {
     private Set<Person> Attendees;
     private Set<Room> Rooms;
 
+    @JsonBackReference
+    private List<PersonDto> Attendees;
 
+    @JsonManagedReference
+    private List<RoomDto> Rooms;
 }

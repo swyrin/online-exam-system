@@ -2,7 +2,7 @@ package com.pdm.backend.controllers;
 
 import com.pdm.backend.mappers.Mapper;
 import com.pdm.backend.models.Person;
-import com.pdm.backend.models.dto.personDto;
+import com.pdm.backend.models.dto.PersonDto;
 import com.pdm.backend.services.CourseServices;
 import com.pdm.backend.services.ExamServices;
 import com.pdm.backend.services.PersonServices;
@@ -18,11 +18,11 @@ import java.util.Optional;
 public class PersonController {
 
     private final PersonServices personServices;
-    private final Mapper<Person, personDto> personMapper;
+    private final Mapper<Person, PersonDto> personMapper;
     private final CourseServices courseServices;
     private final ExamServices examServices;
 
-    public PersonController(PersonServices personServices, Mapper<Person, personDto> personMapper, CourseServices courseServices, ExamServices examServices
+    public PersonController(PersonServices personServices, Mapper<Person, PersonDto> personMapper, CourseServices courseServices, ExamServices examServices
     ) {
         this.personServices = personServices;
         this.personMapper = personMapper;
@@ -32,11 +32,11 @@ public class PersonController {
 
 
     @PutMapping("/person/{person_id}")
-    public ResponseEntity<personDto> createPersons(@PathVariable("person_id") String person_id, @RequestBody personDto person) {
+    public ResponseEntity<PersonDto> createPersons(@PathVariable("person_id") String person_id, @RequestBody PersonDto person) {
         Person personEntity = personMapper.mapfrom(person);
         boolean personExisted = personServices.isExist(person_id);
         Person createdPerson = personServices.createPersons(person_id, personEntity);
-        personDto persondto = personMapper.mapto(createdPerson);
+        PersonDto persondto = personMapper.mapto(createdPerson);
 
         if (personExisted) {
             return new ResponseEntity<>(persondto, HttpStatus.OK);
@@ -48,18 +48,18 @@ public class PersonController {
     }
 
     @GetMapping(path = "/persons")
-    public Page<personDto> PersonList(Pageable pageable) {
+    public ResponseEntity<Page<PersonDto>> PersonList(Pageable pageable) {
         Page<Person> person = personServices.findAll(pageable);
-        return person.map(personMapper::mapto);
+        return ResponseEntity.ok(person.map(personMapper::mapto));
     }
 
     @GetMapping(path = "/persons/{person_id}")
-    public ResponseEntity<personDto> getPersons(@PathVariable("person_id") String person_id, @RequestBody personDto persondto) {
+    public ResponseEntity<PersonDto> getPersons(@PathVariable("person_id") String person_id, @RequestBody PersonDto persondto) {
 
 
         Optional<Person> personEntity = personServices.findOne(person_id);
         return personEntity.map(person -> {
-            personDto savedPersonDto = personMapper.mapto(person);
+            PersonDto savedPersonDto = personMapper.mapto(person);
             return new ResponseEntity<>(savedPersonDto, HttpStatus.OK);
         }).orElse(
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -68,7 +68,7 @@ public class PersonController {
     }
 
     @PatchMapping(path = "/persons/{person_id}")
-    public ResponseEntity<personDto> partialUpdate(@PathVariable("person_id") String person_id, @RequestBody personDto persodto) {
+    public ResponseEntity<PersonDto> partialUpdate(@PathVariable("person_id") String person_id, @RequestBody PersonDto persodto) {
 
         Optional<Person> personEntity = personServices.findOne(person_id);
         if (personEntity.isEmpty()) {
@@ -81,7 +81,7 @@ public class PersonController {
     }
 
     @DeleteMapping(path = "/persons/{person_id}")
-    public ResponseEntity<personDto> delete(@PathVariable("person_id") String person_id) {
+    public ResponseEntity<PersonDto> delete(@PathVariable("person_id") String person_id) {
         personServices.delete(person_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
@@ -90,10 +90,10 @@ public class PersonController {
 
     //for assigned course to person 
     @PutMapping(path = "/persons/{person_id}/courses/{course_id}")
-    public ResponseEntity<personDto> assignCoursesToPerson(
+    public ResponseEntity<PersonDto> assignCoursesToPerson(
             @PathVariable("person_id") String person_id,
             @PathVariable("course_id") String course_id,
-            @RequestBody personDto personDto) {
+            @RequestBody PersonDto personDto) {
 
         Boolean foundCourseID = courseServices.isExist(course_id);
         Boolean foundPersonID = personServices.isExist(person_id);
@@ -107,10 +107,10 @@ public class PersonController {
 
     //for assign Exam to Person
     @PutMapping(path = "/persons/{person_id}/exams/{exam_id}")
-    public ResponseEntity<personDto> assignExamsToPerson(
+    public ResponseEntity<PersonDto> assignExamsToPerson(
             @PathVariable("person_id") String person_id,
             @PathVariable("exam_id") long exam_id,
-            @RequestBody personDto personDto) {
+            @RequestBody PersonDto personDto) {
         boolean foundPersonID = personServices.isExist(person_id);
         boolean foundExamID = examServices.isExist(exam_id);
         if (foundExamID && foundPersonID) {

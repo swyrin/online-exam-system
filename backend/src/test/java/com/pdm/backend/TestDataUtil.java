@@ -1,13 +1,11 @@
 package com.pdm.backend;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Person;
-import com.pdm.backend.models.dto.coursesDto;
-import com.pdm.backend.models.dto.personDto;
+import com.pdm.backend.models.dto.CourseDto;
+import com.pdm.backend.models.dto.PersonDto;
 
 public final class TestDataUtil {
     private TestDataUtil(){
@@ -22,8 +20,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static coursesDto createTestCourseDtoA() {
-        return coursesDto.builder()
+    public static CourseDto createTestCourseDtoA() {
+        return CourseDto.builder()
                 .CourseID(2316829L)
                 .Name("Linear Algebra")
                 .Abbreviation("LA")
@@ -65,8 +63,8 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static personDto createTestPersonDtoA(final personDto persondto){
-        return personDto.builder()
+    public static PersonDto createTestPersonDtoA(final PersonDto persondto){
+        return PersonDto.builder()
                 .PersonID("ITCSIU23067")
                 .BirthDate(Date.valueOf("2003-09-12"))
                 .Age(19)

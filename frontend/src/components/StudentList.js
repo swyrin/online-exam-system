@@ -1,66 +1,32 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./Studentliststyle.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-const initialStudents = [
-  {
-    name: "John Doe",
-    joined: "Jan 2023",
-    major: "Computer Science",
-    image: "/Asuna_Sword_Art_Online.jpg",
-  },
-  {
-    name: "Jane Smith",
-    joined: "Sep 2022",
-    major: "Biology",
-    image: "/studentlist/Doraemon-12-1024x576.jpg",
-  },
-  {
-    name: "Michael Brown",
-    joined: "Aug 2021",
-    major: "Engineering",
-    image: "/studentlist/chaien.webp",
-  },
-  {
-    name: "Emily Davis",
-    joined: "Feb 2022",
-    major: "Literature",
-    image: "/studentlist/conan.jpg",
-  },
-  {
-    name: "Chris Johnson",
-    joined: "Nov 2021",
-    major: "Music",
-    image: "/studentlist/klee.webp",
-  },
-  {
-    name: "Sophia Lee",
-    joined: "Apr 2023",
-    major: "Information Technology",
-    image: "/studentlist/nobita.webp",
-  },
-  {
-    name: "David Wilson",
-    joined: "Jul 2023",
-    major: "Mathematics",
-    image: "/studentlist/shizuka.jpg",
-  },
-  {
-    name: "Amelia Moore",
-    joined: "Dec 2022",
-    major: "Psychology",
-    image: "/studentlist/suneo.jpg",
-  },
-];
-
 export default function StudentList() {
   const [search, setSearch] = useState("");
+  let initialStudents = useRef([]);
 
-  const filteredStudents = initialStudents.filter(
-    (student) =>
-      student.name.toLowerCase().includes(search.toLowerCase()) ||
-      student.major.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    fetch("http://localhost:8081/persons?page=0&size=10",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res["content"])
+          initialStudents.current = res["content"];
+          initialStudents.current = initialStudents.current.filter((student) => {
+            return student["role"]["name"] === "Student"
+          });
+          console.log(initialStudents);
+        });
+  }, []);
+
+  const filteredStudents = initialStudents.current;
+
 
   return (
     <div className="student-list-container">
@@ -94,11 +60,11 @@ export default function StudentList() {
         {filteredStudents.map((student, index) => (
           <div className="student-card" key={index}>
             <div className="student-image">
-              <img src={student.image} alt={student.name} />
+              {/*<img src={student.image} alt={student.name} />*/}
             </div>
-            <h2>{student.name}</h2>
-            <p>Joined: {student.joined}</p>
-            <p>Major: {student.major}</p>
+            <h2>{`${student.FirstName} ${student.MiddleName} ${student.LastName}`} </h2>
+            <p>Joined: {student.JoinDate}</p>
+            <p>ID: {student.PersonID}</p>
           </div>
         ))}
       </section>

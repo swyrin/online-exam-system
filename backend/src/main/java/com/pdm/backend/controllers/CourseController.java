@@ -2,7 +2,7 @@ package com.pdm.backend.controllers;
 
 import com.pdm.backend.mappers.Mapper;
 import com.pdm.backend.models.Course;
-import com.pdm.backend.models.dto.coursesDto;
+import com.pdm.backend.models.dto.CoursesDto;
 import com.pdm.backend.services.CourseServices;
 
 import org.springframework.data.domain.Page;
@@ -18,16 +18,16 @@ public class CourseController {
 
 
     private final CourseServices courseServices;
-    private final Mapper<Course, coursesDto> courseMapper;
+    private final Mapper<Course, CoursesDto> courseMapper;
 
 
-    public CourseController(CourseServices courseServices, Mapper<Course, coursesDto> courseMapper) {
+    public CourseController(CourseServices courseServices, Mapper<Course, CoursesDto> courseMapper) {
         this.courseServices = courseServices;
         this.courseMapper = courseMapper;
     }
 
     @PutMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> createCourse(@PathVariable("course_id") String course_id, @RequestBody coursesDto course) {
+    public ResponseEntity<CoursesDto> createCourse(@PathVariable("course_id") String course_id, @RequestBody CoursesDto course) {
         Course courseEntity = courseMapper.mapfrom(course);
         boolean foundCourseID = courseServices.isExist(course_id);
         if (!foundCourseID) {
@@ -41,18 +41,18 @@ public class CourseController {
     }
 
     @GetMapping("/courses")
-    public Page<coursesDto> courseList(Pageable pageable){
+    public Page<CoursesDto> courseList(Pageable pageable){
         Page<Course> course = courseServices.findAll(pageable);
         return course.map(courseMapper::mapto);
     }
 
     @GetMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> getCourse(@PathVariable("course_id") String course_id, coursesDto coursesDto) {
+    public ResponseEntity<CoursesDto> getCourse(@PathVariable("course_id") String course_id, CoursesDto CoursesDto) {
 
 
         Optional<Course> foundCourse = courseServices.findOne(course_id);
         return foundCourse.map(course -> {
-            coursesDto coursedto = courseMapper.mapto(course);
+            CoursesDto coursedto = courseMapper.mapto(course);
             return new ResponseEntity<>(coursedto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
@@ -60,7 +60,7 @@ public class CourseController {
 
 
     @PatchMapping(path = "/courses/ {course_id}")
-    public ResponseEntity<coursesDto> partialUpdate(@PathVariable("course_id") String course_id, @RequestBody coursesDto coursedto) {
+    public ResponseEntity<CoursesDto> partialUpdate(@PathVariable("course_id") String course_id, @RequestBody CoursesDto coursedto) {
 
         if (!courseServices.isExist(course_id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -75,7 +75,7 @@ public class CourseController {
     }
 
     @DeleteMapping(path = "/courses/{course_id}")
-    public ResponseEntity<coursesDto> delete(@PathVariable("course_id") String course_id) {
+    public ResponseEntity<CoursesDto> delete(@PathVariable("course_id") String course_id) {
         courseServices.delete(course_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

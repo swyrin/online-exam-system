@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 
-public class coursesDto {
+public class CoursesDto {
 
     private String CourseID;
     private String Name;

@@ -1,6 +1,5 @@
 package com.pdm.backend.models.dto;
 
-
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -13,24 +12,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ExamDto {
-
     private Long ExamID;
     private String BagCode;
     private Course Course;
-   private TestType ExamType;
+    private TestType ExamType;
     private Set<Person> Attendees;
     private Set<Room> Rooms;
-
-    @JsonBackReference
-    private List<PersonDto> Attendees;
-
-    @JsonManagedReference
-    private List<RoomDto> Rooms;
 }

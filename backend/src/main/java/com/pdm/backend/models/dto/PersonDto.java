@@ -13,8 +13,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,9 +28,7 @@ public class PersonDto {
     public Date JoinDate;
     public HumanGender Gender;
 
-    public Set<Course> EnrolledCourses;
-    private Set<Exam> AssignedExams;
-    private Set<ExamPersonReport> personReports;
-
-
+//    public Set<Course> EnrolledCourses;
+//    private Set<Exam> AssignedExams;
+//    private Set<ExamPersonReport> personReports;
 }

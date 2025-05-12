@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState , useEffect } from "react";
 import styles from "./ExamSchedule.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -25,49 +26,13 @@ const StarRating = ({ rating, onRatingChange }) => {
 };
 
 const ExamSchedule = () => {
-  const initialExams = () => {
-    const storedExams = localStorage.getItem("exams");
-    return storedExams
-      ? JSON.parse(storedExams)
-      : [
-          {
-            id: "1",
-            subject: "Mathematics",
-            date: "2025-05-01",
-            time: "09:00",
-            status: "Upcoming",
-            difficulty: 3,
-            assignedStudents: [],
-            room: "",
-            capacity: 0,
-          },
-          {
-            id: "2",
-            subject: "Physics",
-            date: "2025-05-03",
-            time: "14:00",
-            status: "Upcoming",
-            difficulty: 4,
-            assignedStudents: [],
-            room: "",
-            capacity: 0,
-          },
-          {
-            id: "3",
-            subject: "Chemistry",
-            date: "2025-04-28",
-            time: "11:00",
-            status: "Completed",
-            difficulty: 2,
-            assignedStudents: [],
-            room: "",
-            capacity: 0,
-          },
-        ];
-  };
+  
+   
+  
 
-  const [exams, setExams] = useState(initialExams());
-  const [currentPage, setCurrentPage] = useState(1);
+  const [exams, setExams] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages , setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -98,9 +63,29 @@ const ExamSchedule = () => {
   ];
   const itemsPerPage = 5;
 
-  useState(() => {
-    localStorage.setItem("exams", JSON.stringify(exams));
-  }, [exams]);
+  
+ 
+  const initialExams = async (page =0 , size = itemsPerPage) => {
+      try {
+         const response = await fetch(`https://localhost:8081/exams?page=${page}&size=${size}`);
+         if(!response.ok){
+            throw new Error ("Could not fetch the exams");
+         }
+         const data = await response.json();
+         setExams(data.content);
+         setTotalPages(data.totalPages);
+
+      } catch (error) {
+         console.log(error);
+      }
+  }
+
+     
+  useEffect(() =>{
+     //Call the fetch function inside the useEffect()
+     initialExams(currentPage);
+    
+  },[currentPage]);
 
   const filteredExams = exams.filter((exam) => {
     const matchesSearch =
@@ -109,12 +94,13 @@ const ExamSchedule = () => {
     const matchesStatus = statusFilter ? exam.status === statusFilter : true;
     return matchesSearch && matchesStatus;
   });
-
-  const totalPages = Math.ceil(filteredExams.length / itemsPerPage);
-  const paginatedExams = filteredExams.slice(
+    
+   const paginatedExams = filteredExams.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  
+ 
 
   const prevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -156,9 +142,27 @@ const ExamSchedule = () => {
   };
 
   const deleteExam = (id) => {
-    if (window.confirm("Are you sure you want to delete this exam?")) {
-      setExams(exams.filter((exam) => exam.id !== id));
-    }
+     
+    fetch(`https://localhost:8081/exams/${id}`,{
+          method : 'DELETE', 
+    })
+    .then(response=>{
+       if(!response.ok){
+         throw new Error("Could not delete the exam");
+       }
+       return response.json();
+    })
+    .then(()=>{
+       
+       setExams(exams.filter((exam) => exam.id !== id));
+       console.log("success");
+    })
+    .catch(error =>{
+        error = console.log(error);
+    })
+    // if (window.confirm("Are you sure you want to delete this exam?")) {
+    //   setExams(exams.filter((exam) => exam.id !== id));
+    // }
   };
 
   const handleFormSubmit = (e) => {
@@ -181,20 +185,67 @@ const ExamSchedule = () => {
         : 0,
     };
     if (editingExam) {
-      setExams(exams.map((exam) => (exam.id === editingExam ? newExam : exam)));
+         //update the existing exam
+         fetch (`https://localhost:8081/exams/${editingExam}`,{
+            method : "PUT",
+            headers :{
+               "Content-Type" : "application/json",
+            },
+            body : JSON.stringify(newExam),
+
+         })
+         .then(response=>{
+             if(!response.ok){
+               throw new Error ("Could not update the following exam!");
+             }
+             return response.json();
+         })
+         .then(updatedExams=>{
+             setExams(
+               exams.map((exam) => exam.id === editingExam ? updatedExams : exam)
+             );
+         })
+         .catch(error=>{
+             console.log(error);
+         })
+        
     } else {
-      setExams([...exams, newExam]);
+      
+       //if exam does not exist => create 
+       fetch(`https://localhost:8081/exams`,{
+          method : "PUT",
+          headers :{
+              "Content-Type" : "application/json",
+          },
+          body : JSON.stringify(newExam),
+       })
+       .then(response =>{
+            if(!response.ok){
+                throw new Error ("Could not create the exam !");
+            }
+             return response.json();
+       })
+       .then(savedExam =>{
+            const updatedExams = exams.some(exam => exam.id === savedExam.id)
+            ? exams.map(exam => exam.id === savedExam.id ? savedExam : exam) // update
+            : [...exams, savedExam]; // create
+            setExams(updatedExams);
+       })
+       .catch(error=>{
+           console.log(error);
+       })
     }
     setModalOpen(false);
   };
 
-  const renderStars = (rating) => {
+  const renderStars = (rating , examId) => {
     return (
       <div className={styles.starRatingDisplay}>
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
             className={star <= rating ? styles.starActive : styles.starInactive}
+            onClick={() => updateDifficulty(examId , star)}
           >
             ★
           </span>
@@ -229,6 +280,37 @@ const ExamSchedule = () => {
     setExams(updatedExams);
     setAssignmentModalOpen(false);
   };
+
+  const updateDifficulty = (examId, newDifficulty) => {
+    const updatedExam = exams.find((exam) => exam.id === examId);
+    if (!updatedExam) return;
+
+    const examToUpdate = {
+      ...updatedExam,
+       difficulty: newDifficulty
+    };
+
+    fetch(`https://localhost:8081/exams/${examId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(examToUpdate),
+   })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to update difficulty");
+      }
+      return response.json();
+    })
+    .then((updatedExamFromServer) => {
+      setExams(exams.map((exam) => exam.id === examId ? updatedExamFromServer : exam));
+    })
+    .catch((error) => {
+      console.error("Update error:", error);
+    });
+  };
+
 
   return (
     <div className={styles.container}>
@@ -287,7 +369,7 @@ const ExamSchedule = () => {
                 <td>{exam.subject}</td>
                 <td>{exam.date}</td>
                 <td>{exam.time}</td>
-                <td>{renderStars(exam.difficulty)}</td>
+                <td>{renderStars(exam.difficulty , exam.ExamID)}</td>
                 <td>
                   <span
                     className={`${styles.status} ${

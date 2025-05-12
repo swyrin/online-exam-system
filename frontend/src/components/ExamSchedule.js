@@ -327,7 +327,6 @@ const ExamSchedule = () => {
                         <th>Date</th>
                         <th>Time</th>
                         <th>Difficulty</th>
-                        <th>Status</th>
                         <th>Room</th>
                         <th>Capacity</th>
                         <th>Assigned Students</th>
@@ -340,10 +339,9 @@ const ExamSchedule = () => {
                             <tr key={exam.examID}>
                                 <td>{exam.examID}</td>
                                 <td>{`${exam.course.courseID} - ${exam.course.name}`}</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>{renderStars(5, exam.examID)}</td>
-                                <td>Upcoming</td>
+                                <td>{exam.date}</td>
+                                <td>{exam.time}</td>
+                                <td>{renderStars(exam.difficulty, exam.examID)}</td>
                                 <td>{exam.rooms[0].RoomID}</td>
                                 <td>{exam.rooms[0].headcount}</td>
                                 <td>{exam.attendees.length}</td>

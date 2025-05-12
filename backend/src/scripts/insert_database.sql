@@ -1,204 +1,319 @@
-USE PDM;
+-- Roles
+INSERT INTO roles (role_id, name) VALUES (1, 'Student');
+INSERT INTO roles (role_id, name) VALUES (2, 'Lecturer');
+INSERT INTO roles (role_id, name) VALUES (3, 'Staff');
 
--- roles: only Student and Staff
-INSERT INTO roles (role_id, name)
-VALUES
-    (1, 'Student'),
-    (2, 'Staff');
+-- Courses
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-101', 'PRF', 'Programming Fundamentals');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-102', 'DSA', 'Data Structures and Algorithms');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-103', 'DBI', 'Database Systems');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-104', 'OS', 'Operating Systems');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-105', 'CN', 'Computer Networks');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-106', 'SE', 'Software Engineering');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-107', 'AI', 'Artificial Intelligence');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-108', 'ML', 'Machine Learning');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-109', 'CS', 'Cybersecurity');
+INSERT INTO courses (course_id, abbreviation, name) VALUES ('IT-110', 'WD', 'Web Development');
 
--- persons: assign role_role_id = 1 (Student) or 2 (Staff)
-INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id)
-VALUES
-    ('P001', 20, '2003-02-14 00:00:00.000000', 'alex.jordan@univ.edu',      'Alex',    1, '2022-08-20 09:00:00.000000', 'Jordan',   'Michael', '203-555-0101', 1),
-    ('P002', 45, '1978-11-30 00:00:00.000000', 'emily.smith@univ.edu',     'Emily',   0, '2010-01-05 08:30:00.000000', 'Smith',    'Rose',    '203-555-0102', 2),
-    ('P003', 22, '2001-07-09 00:00:00.000000', 'daniel.lee@univ.edu',      'Daniel',  1, '2023-01-15 10:15:00.000000', 'Lee',      'James',   '203-555-0103', 1),
-    ('P004', 38, '1985-03-22 00:00:00.000000', 'sophia.brown@univ.edu',    'Sophia',  0, '2018-09-01 11:00:00.000000', 'Brown',    'Grace',   '203-555-0104', 2),
-    ('P005', 21, '2002-12-01 00:00:00.000000', 'chris.davis@univ.edu',     'Chris',   1, '2023-08-25 14:45:00.000000', 'Davis',    'Andrew',  '203-555-0105', 1),
-    ('P006', 29, '1995-07-20 00:00:00.000000', 'lisa.white@univ.edu',      'Lisa',    0, '2019-02-10 09:30:00.000000', 'White',    'Anne',    '203-555-0106', 1),
-    ('P007', 32, '1991-01-11 00:00:00.000000', 'brian.hall@univ.edu',      'Brian',   1, '2015-07-15 13:20:00.000000', 'Hall',     'Edward',  '203-555-0107', 1),
-    ('P008', 27, '1996-10-05 00:00:00.000000', 'rachel.evans@univ.edu',    'Rachel',  0, '2020-11-10 12:10:00.000000', 'Evans',    'Marie',   '203-555-0108', 1),
-    ('P009', 50, '1973-04-18 00:00:00.000000', 'kevin.morris@univ.edu',    'Kevin',   1, '2000-06-01 08:00:00.000000', 'Morris',   'Samuel',  '203-555-0109', 2),
-    ('P010', 19, '2004-08-09 00:00:00.000000', 'natalie.clark@univ.edu',  'Natalie', 0, '2023-09-01 09:15:00.000000', 'Clark',    'Elaine',  '203-555-0110', 1),
-    ('P011', 23, '2000-12-25 00:00:00.000000', 'jason.king@univ.edu',      'Jason',   1, '2022-01-10 10:00:00.000000', 'King',     'Anthony', '203-555-0111', 1),
-    ('P012', 28, '1995-06-30 00:00:00.000000', 'hannah.wright@univ.edu',   'Hannah',  0, '2019-09-05 11:30:00.000000', 'Wright',   'Joy',     '203-555-0112', 2),
-    ('P013', 31, '1992-11-12 00:00:00.000000', 'aaron.green@univ.edu',     'Aaron',   1, '2016-05-20 13:45:00.000000', 'Green',    'Patrick', '203-555-0113', 1),
-    ('P014', 40, '1983-03-08 00:00:00.000000', 'olivia.adams@univ.edu',    'Olivia',  0, '2008-12-01 08:20:00.000000', 'Adams',    'Faith',   '203-555-0114', 2),
-    ('P015', 24, '2000-05-14 00:00:00.000000', 'ethan.baker@univ.edu',     'Ethan',   1, '2022-02-15 15:00:00.000000', 'Baker',    'Leon',    '203-555-0115', 1),
-    ('P016', 35, '1988-02-02 00:00:00.000000', 'zoe.hughes@univ.edu',      'Zoe',     0, '2017-10-10 10:10:00.000000', 'Hughes',   'Dawn',    '203-555-0116', 2),
-    ('P017', 26, '1997-09-19 00:00:00.000000', 'logan.price@univ.edu',     'Logan',   1, '2021-08-05 14:15:00.000000', 'Price',    'Victor',  '203-555-0117', 1),
-    ('P018', 33, '1991-07-07 00:00:00.000000', 'mia.bennett@univ.edu',     'Mia',     0, '2014-05-20 16:20:00.000000', 'Bennett',  'Hope',    '203-555-0118', 1),
-    ('P019', 21, '2002-01-29 00:00:00.000000', 'lucas.cooper@univ.edu',    'Lucas',   1, '2023-03-30 12:00:00.000000', 'Cooper',   'Nathan',  '203-555-0119', 1),
-    ('P020', 29, '1995-10-16 00:00:00.000000', 'ava.morgan@univ.edu',      'Ava',     0, '2018-06-12 11:00:00.000000', 'Morgan',   'Skye',    '203-555-0120', 2);
+-- Rooms
+INSERT INTO rooms (room_id, headcount) VALUES ('100', 28);
+INSERT INTO rooms (room_id, headcount) VALUES ('101', 46);
+INSERT INTO rooms (room_id, headcount) VALUES ('102', 23);
+INSERT INTO rooms (room_id, headcount) VALUES ('103', 34);
+INSERT INTO rooms (room_id, headcount) VALUES ('104', 40);
+INSERT INTO rooms (room_id, headcount) VALUES ('105', 26);
+INSERT INTO rooms (room_id, headcount) VALUES ('106', 26);
+INSERT INTO rooms (room_id, headcount) VALUES ('107', 25);
+INSERT INTO rooms (room_id, headcount) VALUES ('108', 30);
+INSERT INTO rooms (room_id, headcount) VALUES ('109', 26);
 
--- courses: university course catalog
-INSERT INTO courses (course_id, abbreviation, name)
-VALUES
-    ('C001', 'CSCI101', 'Introduction to Computer Science'),
-    ('C002', 'MATH201', 'Calculus I'),
-    ('C003', 'ENGL150', 'World Literature'),
-    ('C004', 'PHYS110', 'General Physics I'),
-    ('C005', 'CHEM101', 'Principles of Chemistry'),
-    ('C006', 'BIOL120', 'Foundations of Biology'),
-    ('C007', 'HIST210', 'Modern World History'),
-    ('C008', 'ECON101', 'Microeconomics'),
-    ('C009', 'PSYC100', 'Introduction to Psychology'),
-    ('C010', 'SOC200', 'Sociology Theory'),
-    ('C011', 'CSCI202', 'Data Structures'),
-    ('C012', 'MATH301', 'Linear Algebra'),
-    ('C013', 'ART105', 'Art History'),
-    ('C014', 'PHIL110', 'Introduction to Philosophy'),
-    ('C015', 'STAT250', 'Statistical Methods');
+-- Test Types
+INSERT INTO test_types (type_id, description, name) VALUES (1, 'Final exam', 'Final');
+INSERT INTO test_types (type_id, description, name) VALUES (2, 'Midterm', 'Midterm');
+INSERT INTO test_types (type_id, description, name) VALUES (3, 'Quiz', 'Quiz');
 
+-- Persons
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21000', 21, '2004-02-08 00:00:00.000000', 'an0@student.edu.vn', 'Nguyen', 0, '2024-10-07 00:00:00.000000', 'An', 'Van', '0940208299', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21001', 21, '2004-10-18 00:00:00.000000', 'binh1@student.edu.vn', 'Tran', 1, '2025-03-07 00:00:00.000000', 'Binh', 'Thi', '0989002977', 1);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21002', 21, '2004-03-11 00:00:00.000000', 'chau2@student.edu.vn', 'Le', 0, '2024-11-22 00:00:00.000000', 'Chau', 'Duc', '0914286051', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21003', 21, '2004-11-25 00:00:00.000000', 'dung3@student.edu.vn', 'Pham', 1, '2025-05-07 00:00:00.000000', 'Dung', 'Minh', '0934889824', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21004', 21, '2004-06-14 00:00:00.000000', 'giang4@student.edu.vn', 'Hoang', 0, '2024-07-14 00:00:00.000000', 'Giang', 'Ngoc', '0928381063', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21005', 21, '2004-12-08 00:00:00.000000', 'hang5@student.edu.vn', 'Dang', 1, '2024-12-04 00:00:00.000000', 'Hang', 'Thanh', '0922456176', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21006', 21, '2004-06-17 00:00:00.000000', 'khoa6@student.edu.vn', 'Bui', 1, '2024-06-21 00:00:00.000000', 'Khoa', 'Quoc', '0922631242', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21007', 21, '2004-09-20 00:00:00.000000', 'linh7@student.edu.vn', 'Do', 1, '2025-02-25 00:00:00.000000', 'Linh', 'Huu', '0976204041', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21008', 21, '2004-06-28 00:00:00.000000', 'nam8@student.edu.vn', 'Ngo', 1, '2024-05-01 00:00:00.000000', 'Nam', 'Hong', '0967500529', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21009', 21, '2004-02-05 00:00:00.000000', 'quyen9@student.edu.vn', 'Vo', 0, '2024-04-22 00:00:00.000000', 'Quyen', 'Khanh', '0916789008', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21010', 21, '2004-04-01 00:00:00.000000', 'an10@student.edu.vn', 'Nguyen', 0, '2024-10-05 00:00:00.000000', 'An', 'Van', '0966123713', 1);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21011', 21, '2004-04-04 00:00:00.000000', 'binh11@student.edu.vn', 'Tran', 1, '2024-01-28 00:00:00.000000', 'Binh', 'Thi', '0994010820', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21012', 21, '2004-07-10 00:00:00.000000', 'chau12@student.edu.vn', 'Le', 1, '2024-03-01 00:00:00.000000', 'Chau', 'Duc', '0991894001', 1);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21013', 21, '2004-06-11 00:00:00.000000', 'dung13@student.edu.vn', 'Pham', 1, '2024-01-31 00:00:00.000000', 'Dung', 'Minh', '0948166869', 1);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21014', 21, '2004-01-08 00:00:00.000000', 'giang14@student.edu.vn', 'Hoang', 1, '2025-01-09 00:00:00.000000', 'Giang', 'Ngoc', '0926317123', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21015', 21, '2004-09-05 00:00:00.000000', 'hang15@student.edu.vn', 'Dang', 1, '2024-08-29 00:00:00.000000', 'Hang', 'Thanh', '0967606636', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21016', 21, '2004-04-20 00:00:00.000000', 'khoa16@student.edu.vn', 'Bui', 1, '2024-09-24 00:00:00.000000', 'Khoa', 'Quoc', '0958491665', 3);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21017', 21, '2004-03-01 00:00:00.000000', 'linh17@student.edu.vn', 'Do', 1, '2025-01-20 00:00:00.000000', 'Linh', 'Huu', '0913202419', 2);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21018', 21, '2004-08-07 00:00:00.000000', 'nam18@student.edu.vn', 'Ngo', 1, '2024-11-30 00:00:00.000000', 'Nam', 'Hong', '0974090614', 1);
+INSERT INTO persons (person_id, age, birth_date, email, first_name, gender, join_date, last_name, middle_name, phone, role_role_id) VALUES ('ITITIU21019', 21, '2004-11-06 00:00:00.000000', 'quyen19@student.edu.vn', 'Vo', 0, '2025-05-01 00:00:00.000000', 'Quyen', 'Khanh', '0927292229', 3);
 
--- enrollments: which students are registered
-INSERT INTO course_person (person_id, course_id)
-VALUES
-    ('P001','C001'), ('P001','C002'),
-    ('P002','C003'),
-    ('P003','C004'), ('P003','C005'),
-    ('P004','C006'),
-    ('P005','C007'), ('P005','C008'),
-    ('P006','C009'),
-    ('P007','C010'),
-    ('P008','C011'),
-    ('P009','C012'),
-    ('P010','C013'),
-    ('P011','C014'),
-    ('P012','C015'),
-    ('P013','C001'),
-    ('P014','C003'),
-    ('P015','C006'),
-    ('P016','C009'),
-    ('P017','C005'),
-    ('P018','C007'),
-    ('P019','C010'),
-    ('P020','C011');
+-- Course_Person
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21000', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21000', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21000', 'IT-109');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21001', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21001', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21001', 'IT-107');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21002', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21002', 'IT-107');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21002', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21003', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21003', 'IT-110');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21003', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21004', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21004', 'IT-104');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21004', 'IT-105');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21005', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21005', 'IT-109');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21005', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21006', 'IT-109');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21006', 'IT-104');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21006', 'IT-110');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21007', 'IT-104');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21007', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21007', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21008', 'IT-110');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21008', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21008', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21009', 'IT-102');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21009', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21009', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21010', 'IT-109');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21010', 'IT-105');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21010', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21011', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21011', 'IT-105');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21011', 'IT-104');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21012', 'IT-102');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21012', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21012', 'IT-107');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21013', 'IT-101');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21013', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21013', 'IT-110');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21014', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21014', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21014', 'IT-109');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21015', 'IT-102');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21015', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21015', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21016', 'IT-102');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21016', 'IT-109');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21016', 'IT-105');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21017', 'IT-108');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21017', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21017', 'IT-107');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21018', 'IT-110');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21018', 'IT-103');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21018', 'IT-104');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21019', 'IT-102');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21019', 'IT-106');
+INSERT INTO course_person (person_id, course_id) VALUES ('ITITIU21019', 'IT-105');
 
--- exam reports: final grades for each student-course
-INSERT INTO person_exam_report (person_id, course_id, grade, issue_date)
-VALUES
-    ('P001','C001',  88, '2024-05-15 10:00:00'),
-    ('P001','C002',  79, '2024-05-16 10:30:00'),
-    ('P002','C003',  92, '2024-05-15 11:00:00'),
-    ('P003','C004',  67, '2024-05-17 09:00:00'),
-    ('P003','C005',  74, '2024-05-18 09:30:00'),
-    ('P004','C006',  85, '2024-05-15 14:00:00'),
-    ('P005','C007',  81, '2024-05-16 13:00:00'),
-    ('P005','C008',  78, '2024-05-17 12:00:00'),
-    ('P006','C009',  90, '2024-05-15 10:30:00'),
-    ('P007','C010',  75, '2024-05-16 11:30:00'),
-    ('P008','C011',  84, '2024-05-15 15:00:00'),
-    ('P009','C012',  69, '2024-05-17 16:00:00'),
-    ('P010','C013',  73, '2024-05-18 17:00:00'),
-    ('P011','C014',  77, '2024-05-19 10:00:00'),
-    ('P012','C015',  82, '2024-05-20 10:00:00');
+-- Course_Room
+INSERT INTO course_room (room_id, course_id) VALUES ('105', 'IT-101');
+INSERT INTO course_room (room_id, course_id) VALUES ('106', 'IT-101');
+INSERT INTO course_room (room_id, course_id) VALUES ('108', 'IT-102');
+INSERT INTO course_room (room_id, course_id) VALUES ('101', 'IT-102');
+INSERT INTO course_room (room_id, course_id) VALUES ('102', 'IT-103');
+INSERT INTO course_room (room_id, course_id) VALUES ('100', 'IT-103');
+INSERT INTO course_room (room_id, course_id) VALUES ('107', 'IT-104');
+INSERT INTO course_room (room_id, course_id) VALUES ('108', 'IT-104');
+INSERT INTO course_room (room_id, course_id) VALUES ('102', 'IT-105');
+INSERT INTO course_room (room_id, course_id) VALUES ('109', 'IT-105');
+INSERT INTO course_room (room_id, course_id) VALUES ('108', 'IT-106');
+INSERT INTO course_room (room_id, course_id) VALUES ('102', 'IT-106');
+INSERT INTO course_room (room_id, course_id) VALUES ('106', 'IT-107');
+INSERT INTO course_room (room_id, course_id) VALUES ('101', 'IT-107');
+INSERT INTO course_room (room_id, course_id) VALUES ('100', 'IT-108');
+INSERT INTO course_room (room_id, course_id) VALUES ('103', 'IT-108');
+INSERT INTO course_room (room_id, course_id) VALUES ('105', 'IT-109');
+INSERT INTO course_room (room_id, course_id) VALUES ('109', 'IT-109');
+INSERT INTO course_room (room_id, course_id) VALUES ('109', 'IT-110');
+INSERT INTO course_room (room_id, course_id) VALUES ('101', 'IT-110');
 
--- rooms: lecture halls & labs
-INSERT INTO rooms (room_id, headcount)
-VALUES
-    ('A101', 120), ('A102', 80),  ('A103', 60),  ('A104', 100), ('A105', 40),
-    ('B201', 90),  ('B202', 50),  ('B203', 70),  ('B204', 30),  ('B205', 110),
-    ('C301', 25),  ('C302', 35),  ('C303', 45),  ('C304', 20),  ('C305', 55),
-    ('D401', 200), ('D402', 150), ('D403', 10),  ('D404', 180), ('D405', 160);
+-- Person_Room_Attend
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('109', 'ITITIU21000');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('101', 'ITITIU21000');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('102', 'ITITIU21001');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('103', 'ITITIU21001');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('107', 'ITITIU21002');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('101', 'ITITIU21002');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('100', 'ITITIU21003');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('103', 'ITITIU21003');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('102', 'ITITIU21004');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('106', 'ITITIU21004');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('101', 'ITITIU21005');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('108', 'ITITIU21005');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('106', 'ITITIU21006');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('109', 'ITITIU21006');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('109', 'ITITIU21007');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('103', 'ITITIU21007');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('100', 'ITITIU21008');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('103', 'ITITIU21008');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('105', 'ITITIU21009');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('106', 'ITITIU21009');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('108', 'ITITIU21010');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('106', 'ITITIU21010');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('105', 'ITITIU21011');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('107', 'ITITIU21011');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('108', 'ITITIU21012');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('100', 'ITITIU21012');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('104', 'ITITIU21013');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('103', 'ITITIU21013');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('109', 'ITITIU21014');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('101', 'ITITIU21014');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('106', 'ITITIU21015');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('100', 'ITITIU21015');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('109', 'ITITIU21016');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('103', 'ITITIU21016');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('105', 'ITITIU21017');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('108', 'ITITIU21017');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('109', 'ITITIU21018');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('101', 'ITITIU21018');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('105', 'ITITIU21019');
+INSERT INTO person_room_attend (room_id, person_id) VALUES ('108', 'ITITIU21019');
 
--- test types: academic exams & assessments
-INSERT INTO test_types (type_id, description, name)
-VALUES
-    (1, 'Comprehensive midterm exam',         'Midterm'),
-    (2, 'End-of-term final examination',      'Final');
+-- Exams
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (1, 'BC9395', 'IT-104', 3, '2024-09-05', '08:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (2, 'BC3544', 'IT-108', 2, '2024-02-19', '11:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (3, 'BC5671', 'IT-107', 1, '2024-03-11', '08:00:00.000000', 5);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (4, 'BC8057', 'IT-101', 1, '2024-11-09', '12:00:00.000000', 3);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (5, 'BC1072', 'IT-109', 2, '2024-04-20', '11:00:00.000000', 3);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (6, 'BC5799', 'IT-102', 1, '2025-03-12', '12:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (7, 'BC8933', 'IT-110', 2, '2024-05-11', '13:00:00.000000', 1);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (8, 'BC4877', 'IT-108', 2, '2024-04-17', '12:00:00.000000', 1);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (9, 'BC9895', 'IT-104', 2, '2025-01-03', '13:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (10, 'BC2951', 'IT-103', 3, '2025-03-06', '09:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (11, 'BC7844', 'IT-101', 3, '2024-08-12', '12:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (12, 'BC6323', 'IT-107', 2, '2024-06-02', '08:00:00.000000', 4);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (13, 'BC7105', 'IT-105', 1, '2024-08-06', '08:00:00.000000', 5);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (14, 'BC3045', 'IT-101', 1, '2024-08-05', '12:00:00.000000', 5);
+INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES (15, 'BC4651', 'IT-108', 2, '2024-06-16', '12:00:00.000000', 2);
 
--- course-room assignments
-INSERT INTO course_room (room_id, course_id)
-VALUES
-    ('A101','C001'), ('A101','C011'),
-    ('A102','C002'),
-    ('A103','C003'),
-    ('A104','C004'),
-    ('A105','C005'),
-    ('B201','C006'),
-    ('B202','C007'),
-    ('B203','C008'),
-    ('B204','C009'),
-    ('B205','C010'),
-    ('C301','C012'),
-    ('C302','C013'),
-    ('C303','C014'),
-    ('C304','C015'),
-    ('D401','C001'),
-    ('D402','C003'),
-    ('D403','C005'),
-    ('D404','C007'),
-    ('D405','C009');
+-- Exam_Room
+INSERT INTO exam_room (room_id, exam_id) VALUES ('105', 1);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('102', 2);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('101', 3);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('103', 4);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('106', 5);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('103', 6);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('109', 7);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('104', 8);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('101', 9);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('104', 10);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('103', 11);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('103', 12);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('101', 13);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('101', 14);
+INSERT INTO exam_room (room_id, exam_id) VALUES ('103', 15);
 
--- attendance: who shows up in which room
-INSERT INTO person_room_attend (person_id, room_id)
-VALUES
-    ('P001','A101'), ('P002','A102'), ('P003','A103'), ('P004','A104'), ('P005','A105'),
-    ('P006','B201'), ('P007','B202'), ('P008','B203'), ('P009','B204'), ('P010','B205'),
-    ('P011','C301'), ('P012','C302'), ('P013','C303'), ('P014','C304'), ('P015','C305'),
-    ('P016','D401'), ('P017','D402'), ('P018','D403'), ('P019','D404'), ('P020','D405');
+-- Person_Exam
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21000', 14);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21000', 15);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21000', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21001', 14);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21001', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21001', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21002', 11);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21002', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21002', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21003', 7);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21003', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21003', 2);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21004', 7);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21004', 9);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21004', 4);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21005', 4);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21005', 14);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21005', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21006', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21006', 13);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21006', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21007', 1);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21007', 9);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21007', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21008', 4);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21008', 7);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21008', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21009', 1);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21009', 14);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21009', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21010', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21010', 15);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21010', 7);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21011', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21011', 12);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21011', 9);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21012', 14);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21012', 5);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21012', 2);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21013', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21013', 8);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21013', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21014', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21014', 12);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21014', 15);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21015', 2);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21015', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21015', 1);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21016', 7);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21016', 11);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21016', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21017', 10);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21017', 2);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21017', 6);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21018', 14);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21018', 3);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21018', 9);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21019', 4);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21019', 11);
+INSERT INTO person_exam (person_id, exam_id) VALUES ('ITITIU21019', 2);
 
--- scheduled exams per course
-INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id)
-VALUES
-    ( 1, 'MT1-CSCI101','C001', 1),
-    ( 2, 'FN1-MATH201','C002', 2),
-    ( 3, 'MT1-WORLDLIT','C003', 1),
-    ( 4, 'FN1-PHYS110','C004', 2),
-    ( 5, 'MT1-CHEM101','C005', 1),
-    ( 6, 'FN1-BIOL120','C006', 2),
-    ( 7, 'MT1-HIST210','C007', 1),
-    ( 8, 'FN1-ECON101','C008', 2),
-    ( 9, 'MT1-PSYC100','C009', 1),
-    (10, 'FN1-SOC200','C010', 2),
-    (11, 'MT2-CSCI202','C011', 1),
-    (12, 'FN2-MATH301','C012', 2),
-    (13, 'MT2-ARTH105','C013', 1),
-    (14, 'FN2-PHIL110','C014', 2),
-    (15, 'MT2-STAT250','C015', 1),
-    (16, 'FN2-CSCI101','C001', 2),
-    (17, 'MT2-WORLDLIT','C003', 1),
-    (18, 'FN2-CHEM101','C005', 2),
-    (19, 'MT2-HIST210','C007', 1),
-    (20, 'FN2-PSYC100','C009', 2);
-
--- exam-room scheduling
-INSERT INTO exam_room (room_id, exam_id)
-VALUES
-    ('A101',  1), ('A101', 11),
-    ('A102',  2),
-    ('A103',  3),
-    ('A104',  4),
-    ('A105',  5),
-    ('B201',  6),
-    ('B202',  7), ('B202', 10),
-    ('B203',  8),
-    ('B204',  9),
-    ('C301', 12),
-    ('C302', 13),
-    ('C303', 14), ('C303', 18),
-    ('C304', 15),
-    ('C305', 16),
-    ('D401', 17),
-    ('D402', 19),
-    ('D403', 20);
-
--- exam attendance: who sat which exam
-INSERT INTO person_exam (person_id, exam_id)
-VALUES
-    ('P001',  1), ('P001', 16),
-    ('P002',  2),
-    ('P003',  3), ('P003', 17),
-    ('P004',  4),
-    ('P005',  5),
-    ('P006',  6),
-    ('P007',  7),
-    ('P008',  8), ('P008', 10),
-    ('P009',  9), ('P009', 19),
-    ('P010', 11), ('P010', 12),
-    ('P011', 13),
-    ('P012', 14), ('P012', 15),
-    ('P013', 18),
-    ('P014', 20),
-    ('P015',  1),
-    ('P016',  2);
+-- Person_Exam_Report
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (59, '2024-12-20 00:00:00.000000', 'IT-108', 'ITITIU21000');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (81, '2024-08-26 00:00:00.000000', 'IT-101', 'ITITIU21000');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (59, '2024-08-26 00:00:00.000000', 'IT-101', 'ITITIU21001');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (82, '2024-02-22 00:00:00.000000', 'IT-110', 'ITITIU21001');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (91, '2024-06-04 00:00:00.000000', 'IT-102', 'ITITIU21002');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (76, '2024-01-24 00:00:00.000000', 'IT-108', 'ITITIU21002');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (72, '2025-01-16 00:00:00.000000', 'IT-101', 'ITITIU21003');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (70, '2025-04-10 00:00:00.000000', 'IT-105', 'ITITIU21003');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (67, '2024-08-12 00:00:00.000000', 'IT-107', 'ITITIU21004');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (72, '2025-02-07 00:00:00.000000', 'IT-102', 'ITITIU21004');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (57, '2024-06-15 00:00:00.000000', 'IT-109', 'ITITIU21005');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (80, '2024-08-27 00:00:00.000000', 'IT-108', 'ITITIU21005');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (83, '2024-11-10 00:00:00.000000', 'IT-103', 'ITITIU21006');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (54, '2024-03-03 00:00:00.000000', 'IT-106', 'ITITIU21006');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (79, '2024-12-06 00:00:00.000000', 'IT-107', 'ITITIU21007');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (58, '2024-11-28 00:00:00.000000', 'IT-110', 'ITITIU21007');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (54, '2025-03-14 00:00:00.000000', 'IT-103', 'ITITIU21008');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (81, '2024-08-15 00:00:00.000000', 'IT-102', 'ITITIU21008');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (67, '2025-01-14 00:00:00.000000', 'IT-101', 'ITITIU21009');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (58, '2024-09-16 00:00:00.000000', 'IT-109', 'ITITIU21009');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (59, '2024-06-15 00:00:00.000000', 'IT-103', 'ITITIU21010');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (65, '2024-11-28 00:00:00.000000', 'IT-102', 'ITITIU21010');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (92, '2024-12-28 00:00:00.000000', 'IT-105', 'ITITIU21011');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (96, '2024-08-13 00:00:00.000000', 'IT-110', 'ITITIU21011');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (90, '2025-04-22 00:00:00.000000', 'IT-104', 'ITITIU21012');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (94, '2025-05-08 00:00:00.000000', 'IT-110', 'ITITIU21012');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (51, '2024-08-30 00:00:00.000000', 'IT-105', 'ITITIU21013');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (64, '2025-04-05 00:00:00.000000', 'IT-110', 'ITITIU21013');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (56, '2025-03-30 00:00:00.000000', 'IT-108', 'ITITIU21014');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (72, '2025-02-05 00:00:00.000000', 'IT-109', 'ITITIU21014');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (79, '2025-02-19 00:00:00.000000', 'IT-104', 'ITITIU21015');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (67, '2024-10-10 00:00:00.000000', 'IT-110', 'ITITIU21015');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (82, '2024-07-13 00:00:00.000000', 'IT-108', 'ITITIU21016');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (90, '2024-02-25 00:00:00.000000', 'IT-103', 'ITITIU21016');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (75, '2025-02-20 00:00:00.000000', 'IT-101', 'ITITIU21017');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (75, '2024-01-16 00:00:00.000000', 'IT-107', 'ITITIU21017');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (80, '2025-01-31 00:00:00.000000', 'IT-104', 'ITITIU21018');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (99, '2025-03-17 00:00:00.000000', 'IT-107', 'ITITIU21018');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (82, '2024-11-07 00:00:00.000000', 'IT-108', 'ITITIU21019');
+INSERT INTO person_exam_report (grade, issue_date, course_id, person_id) VALUES (98, '2024-06-18 00:00:00.000000', 'IT-105', 'ITITIU21019');

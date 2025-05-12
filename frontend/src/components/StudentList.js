@@ -5,9 +5,10 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 export default function StudentList() {
     const [search, setSearch] = useState("");
     let [students, setStudents] = useState([]);
+    let [page, setPage] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:8081/persons?page=0&size=10",
+        fetch(`http://localhost:8081/persons?page=${page}&size=10`,
             {
                 method: "GET",
                 headers: {
@@ -18,7 +19,7 @@ export default function StudentList() {
             .then(res => {
                 setStudents(res["content"]);
             });
-    }, []);
+    }, [page]);
 
     const filteredStudents = students;
 

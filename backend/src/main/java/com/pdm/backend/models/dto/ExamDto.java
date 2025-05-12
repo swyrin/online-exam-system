@@ -1,8 +1,8 @@
 package com.pdm.backend.models.dto;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pdm.backend.models.Course;
 import com.pdm.backend.models.Person;
 import com.pdm.backend.models.Room;
@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 public class ExamDto {
     private Long ExamID;
     private String BagCode;
+    private Date Date;
+    private Time Time;
+    private Short Difficulty;
     private Course Course;
     private TestType ExamType;
     private Set<Person> Attendees;

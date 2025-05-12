@@ -104,6 +104,9 @@ create table if not exists exams
     bag_code          varchar(255) null,
     course_course_id  varchar(255) null,
     exam_type_type_id bigint       null,
+    date              date         null,
+    time              time(6)      null,
+    difficulty        smallint     null,
     constraint FKgujq84gqhfqd96d1so4gmn8bu
         foreign key (exam_type_type_id) references test_types (type_id),
     constraint FKihnbtgx6sw5kyidarrf21cfq3
@@ -131,4 +134,3 @@ create table if not exists person_exam
     constraint FKl26fpy2amha5oj47hdh9ev5s1
         foreign key (exam_id) references exams (exam_id)
 );
-

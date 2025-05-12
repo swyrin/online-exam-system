@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.*;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,15 @@ public class Exam {
     @Id
     @Column(name = "exam_id")
     private Long ExamID;
+
+    @Column(name = "date")
+    private Date Date;
+
+    @Column(name = "time")
+    private Time Time;
+
+    @Column(name = "difficulty")
+    private Short Difficulty;
 
     @Column(name = "bag_code")
     private String BagCode;

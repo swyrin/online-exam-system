@@ -2,11 +2,11 @@ from datetime import datetime, timedelta, time
 import random
 
 # Constants
-num_students = 20
+num_students = 120
 num_courses = 10
 num_rooms = 10
 num_roles = 3
-num_exams = 15
+num_exams = 50
 course_ids = [f"IT-{101 + i}" for i in range(num_courses)]
 student_ids = [f"ITITIU21{str(i).zfill(3)}" for i in range(num_students)]
 room_ids = [str(100 + i) for i in range(num_rooms)]

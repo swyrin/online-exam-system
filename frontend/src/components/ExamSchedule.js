@@ -107,13 +107,26 @@ const ExamSchedule = () => {
         fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`)
             .then(res => res.json())
             .then(res => {
-                setExams(res.content || []);
+                let inner = res.content; 
+                console.log(res.content)
+                inner = inner.filter((exam) => {
+                    // console.log(exam)
+                    // console.log(statusFilter)
+                    // console.log(searchInput)
+                    return (statusFilter === "" || exam.status === statusFilter) && 
+                        ((searchInput === "" || exam.examID === parseInt(searchInput)) ||
+                        (searchInput === "" || exam.course.name.toLowerCase().includes(searchInput.toLowerCase())) ||
+                        (searchInput === "" || exam.course.abbreviation.toLowerCase().includes(searchInput.toLowerCase())) ||
+                        (searchInput === "" || exam.course.courseID.toLowerCase().includes(searchInput.toLowerCase())))
+                });
+                // console.log(inner)
+                setExams(inner || []);
                 setTotalPages(res.totalPages || 1);
             })
             .catch((error) =>{
                 console.log(error);
             })
-    }, [currentPage , statusFilter , searchInput]);
+    }, [currentPage, statusFilter, searchInput]);
 
     useEffect(()=>{
         if(deleteBtn){
@@ -172,11 +185,11 @@ const ExamSchedule = () => {
     // let totalPages = Math.ceil(filteredExams.length / itemsPerPage);
 
     const prevPage = () => {
-        if (currentPage >= 1) setCurrentPage(currentPage - 1);
+        setCurrentPage(currentPage - 1);
     };
 
     const nextPage = () => {
-        if (currentPage < totalPages -1 ) setCurrentPage(currentPage + 1);
+        setCurrentPage(currentPage + 1);
     };
 
     const openAddModal = () => {
@@ -233,16 +246,15 @@ const ExamSchedule = () => {
         })
             .then((response) => {
                 if (!response.ok) {
-                     if (response.status === 400 || response.status === 500) {
+                    if (response.status === 400 || response.status === 500) {
                         return response.json().then((err) => {
-                               throw new Error(err.message || "Failed to delete exam due to constraints");
+                            throw new Error(err.message || "Failed to delete exam due to constraints");
                         });
                     }
                     throw new Error("Could not delete the exam");
                 }
                 console.log("Delete successful for exam ID:", id);
-                  setDeleteBtn(true);
-               
+                setDeleteBtn(true);
             })
             // .then(() => {
             //     setExams(exams.filter((exam) => exam.examID !== id));
@@ -250,8 +262,8 @@ const ExamSchedule = () => {
             // })
             .catch((error) => {
                 console.log(error);
-                 setErrorMessage(
-                     "Cannot delete this exam because it is associated with rooms. Please remove the room assignments first."
+                setErrorMessage(
+                    "Cannot delete this exam because it is associated with rooms. Please remove the room assignments first."
                 );
             });
     };
@@ -600,7 +612,7 @@ const ExamSchedule = () => {
                 <button onClick={prevPage} disabled={currentPage === 0}>
                     Previous
                 </button>
-                <button onClick={nextPage} disabled={currentPage === totalPages -1}>
+                <button onClick={nextPage} disabled={currentPage === totalPages}>
                     Next
                 </button>
             </div>

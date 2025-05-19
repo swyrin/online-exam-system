@@ -102,6 +102,7 @@ create table if not exists exams
     exam_id           bigint       not null
         primary key,
     bag_code          varchar(255) null,
+    status            varchar(255) null,
     course_course_id  varchar(255) null,
     exam_type_type_id bigint       null,
     date              date         null,

@@ -103,8 +103,9 @@ for eid in exam_ids:
     edate = random_date(start_date, end_date)
     etime = random_time()
     diff = random.randint(1, 5)
-    sql.append(f"INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES "
-               f"({eid}, '{bag_code}', '{course}', {exam_type}, '{edate.date()}', '{etime.strftime('%H:%M:%S.%f')}', {diff});")
+    status = random.choice(["Upcoming", "Completed", "Cancelled"])
+    sql.append(f"INSERT INTO exams (exam_id, bag_code, status, course_course_id, exam_type_type_id, date, time, difficulty) VALUES "
+               f"({eid}, '{bag_code}', '{status}','{course}', {exam_type}, '{edate.date()}', '{etime.strftime('%H:%M:%S.%f')}', {diff});")
 
 sql.append("\n-- Exam_Room")
 for eid in exam_ids:

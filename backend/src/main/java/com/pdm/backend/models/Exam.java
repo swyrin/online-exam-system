@@ -31,6 +31,9 @@ public class Exam {
     @Column(name = "bag_code")
     private String BagCode;
 
+    @Column(name = "status")
+    private String Status;
+
     @ManyToOne
     private Course Course;
 

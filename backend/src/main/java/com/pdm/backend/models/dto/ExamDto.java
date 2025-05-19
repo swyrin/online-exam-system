@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class ExamDto {
     private Long ExamID;
     private String BagCode;
+    private String Status;
     private Date Date;
     private Time Time;
     private Short Difficulty;

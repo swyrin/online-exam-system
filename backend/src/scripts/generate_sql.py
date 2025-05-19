@@ -2,11 +2,11 @@ from datetime import datetime, timedelta, time
 import random
 
 # Constants
-num_students = 20
+num_students = 120
 num_courses = 10
 num_rooms = 10
 num_roles = 3
-num_exams = 15
+num_exams = 50
 course_ids = [f"IT-{101 + i}" for i in range(num_courses)]
 student_ids = [f"ITITIU21{str(i).zfill(3)}" for i in range(num_students)]
 room_ids = [str(100 + i) for i in range(num_rooms)]
@@ -103,8 +103,9 @@ for eid in exam_ids:
     edate = random_date(start_date, end_date)
     etime = random_time()
     diff = random.randint(1, 5)
-    sql.append(f"INSERT INTO exams (exam_id, bag_code, course_course_id, exam_type_type_id, date, time, difficulty) VALUES "
-               f"({eid}, '{bag_code}', '{course}', {exam_type}, '{edate.date()}', '{etime.strftime('%H:%M:%S.%f')}', {diff});")
+    status = random.choice(["Upcoming", "Completed", "Cancelled"])
+    sql.append(f"INSERT INTO exams (exam_id, bag_code, status, course_course_id, exam_type_type_id, date, time, difficulty) VALUES "
+               f"({eid}, '{bag_code}', '{status}','{course}', {exam_type}, '{edate.date()}', '{etime.strftime('%H:%M:%S.%f')}', {diff});")
 
 sql.append("\n-- Exam_Room")
 for eid in exam_ids:

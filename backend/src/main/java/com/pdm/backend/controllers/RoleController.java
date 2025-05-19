@@ -44,7 +44,7 @@ public class RoleController {
     }
 
     @GetMapping(path = "/roles")
-    public List<RoleDto> RoleList(@RequestBody RoleDto roleDto) {
+    public List<RoleDto> RoleList() {
         List<Role> roles = roleServices.findAll();
         return roles.stream().map(RoleMapper::mapto).collect(Collectors.toList());
     }

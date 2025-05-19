@@ -21,11 +21,31 @@ public class ExamController {
         this.examServices = examServices;
     }
 
+    @PostMapping(path = "/exams")
+    public ResponseEntity<ExamDto> createExam(@RequestBody ExamDto examDto){
+           Exam exam = examMapper.mapfrom(examDto);
+           Exam createdExam = examServices.saveExam( exam);
+           return new ResponseEntity<>(examMapper.mapto(createdExam) , HttpStatus.CREATED);
+    }
+
     @PutMapping(path = "/exams/{exam_id}")
-    public ResponseEntity<ExamDto> createExam(@PathVariable("exam_id") long exam_id, @RequestBody ExamDto examDto) {
+    public ResponseEntity<ExamDto> UpdateExam(@PathVariable("exam_id") long exam_id, @RequestBody ExamDto examDto) {
         Exam exam = examMapper.mapfrom(examDto);
-        Exam savedExam = examServices.saveExam(exam_id, exam);
-        return new ResponseEntity<>(examMapper.mapto(savedExam), HttpStatus.CREATED);
+        boolean isExamExist = examServices.isExist(exam_id);
+        
+      if(isExamExist){
+        examDto.setExamID(exam_id);
+         Exam savedExam = examServices.saveExam( exam);
+        ExamDto savedExamDto = examMapper.mapto(savedExam);
+         return new ResponseEntity<>(savedExamDto , HttpStatus.OK);
+      }
+      else{
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+        
+            
+        
+        
     }
 
     @GetMapping(path = "/exams")
@@ -35,13 +55,13 @@ public class ExamController {
     }
 
     @GetMapping(path = "/exams/{exam_id}")
-    public ResponseEntity<ExamDto> getExam(@PathVariable("exam_id") long exam_id, @RequestBody ExamDto examDto) {
+    public ResponseEntity<ExamDto> getExam(@PathVariable("exam_id") long exam_id,  ExamDto examDto) {
         boolean foundExamID = examServices.isExist(exam_id);
         if (!foundExamID) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             Exam exam = examMapper.mapfrom(examDto);
-            Exam savedExam = examServices.saveExam(exam_id, exam);
+            Exam savedExam = examServices.saveExam( exam);
             return new ResponseEntity<>(examMapper.mapto(savedExam), HttpStatus.OK);
         }
     }

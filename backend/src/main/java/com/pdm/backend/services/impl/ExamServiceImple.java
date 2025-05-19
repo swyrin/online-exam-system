@@ -19,8 +19,8 @@ public class ExamServiceImple implements ExamServices {
     }
 
     @Override
-    public Exam saveExam(long exam_id, Exam exam) {
-        exam.setExamID(exam_id);
+    public Exam saveExam( Exam exam) {
+       
         return examRepository.save(exam);
     }
 

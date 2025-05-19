@@ -28,24 +28,28 @@ const ExamSchedule = () => {
     const [exams, setExams] = useState([]);
     const [testTypes, setTestTypes] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [students, setStudents] = useState([]); // New state for students
     const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages , setTotalPages] = useState(1);
+    // const [totalPages , setTotalPages] = useState(1);
     const [editBtn , setEditBtn] = useState(false);
     const [deleteBtn , setDeleteBtn] = useState(false);
     const [assignBtn , setAssignBtn] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false); // New state to track form submission
     const [searchInput, setSearchInput] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [editingExam, setEditingExam] = useState(null);
+     const [newExamId, setNewExamId] = useState(null); // New state for pre-generated examID
     const [formData, setFormData] = useState({
         courseID: "",
+        courseName:"",
         bagCode: "",
         date: "",
         time: "",
         difficulty: 1,
         status: "Upcoming",
-        examType:"",
+        typeID:"",
     });
     const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
     const [selectedExamId, setSelectedExamId] = useState(null);
@@ -83,14 +87,42 @@ const ExamSchedule = () => {
        
         
     // }
+    // Fetch students on component mount
+  useEffect(() => {
+    
+    fetch("http://localhost:8081/persons")
+      .then((res) => {
+        if (!res.ok) throw new Error("Could not fetch students");
+        return res.json();
+      })
+      .then((data) => {
+        const studentsData = Array.isArray(data) ? data : (data.content || []);
+        setStudents(studentsData);
+        console.log("Fetched students:", studentsData);
+        
+      })
+      .catch((error) => {
+        console.error("Fetch students error:", error);
+        setStudents([]);
+        setErrorMessage("Failed to load students. Please try again.");
+      });
+  }, []);
+
     useEffect(() => {
-    fetch("http://localhost:8081/courses")
+    fetch(`http://localhost:8081/courses`)
       .then((res) => {
         if (!res.ok) throw new Error("Could not fetch courses");
         return res.json();
       })
-      .then((data) => setCourses(data))
-      .catch((error) => console.log("Fetch courses error:", error));
+      .then((data) =>{
+      const coursesData = Array.isArray(data) ? data : (data.content || []);
+       setCourses(coursesData);
+    })
+      .catch((error) =>{ 
+        console.log("Fetch courses error:", error);
+        setCourses([]);
+
+    });
   }, []);
 
      useEffect(() => {
@@ -107,8 +139,8 @@ const ExamSchedule = () => {
         fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`)
             .then(res => res.json())
             .then(res => {
-                setExams(res.content || []);
-                setTotalPages(res.totalPages || 1);
+                setExams(res.content );
+                totalPages = res.totalPages;
             })
             .catch((error) =>{
                 console.log(error);
@@ -121,7 +153,7 @@ const ExamSchedule = () => {
             .then(res => res.json())
             .then(res => {
                 setExams(res.content);
-                setTotalPages(res.totalPages );
+                totalPages = res.totalPages;
                 setDeleteBtn(false);
                 console.log("Fetched after delete:", res.content);
                 setErrorMessage(""); 
@@ -138,7 +170,7 @@ const ExamSchedule = () => {
             .then(res => res.json())
             .then(res => {
                 setExams(res.content );
-                setTotalPages(res.totalPages );
+                totalPages = res.totalPages;
                 setEditBtn(false);
                 console.log("Fetched after edit:", res.content);
             })
@@ -152,10 +184,11 @@ const ExamSchedule = () => {
         if(assignBtn){
             fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`)
             .then(res => res.json())
-            .then(res => {
+            .then((res) => {
                 setExams(res.content);
-                setTotalPages(res.totalPages);
+                totalPages = res.totalPages;
                 setAssignBtn(false);
+                console.log("Fetched after assign:", res.content);
             })
             .catch((error) =>{
                 console.log(error);
@@ -163,32 +196,35 @@ const ExamSchedule = () => {
         }
     },[assignBtn , currentPage]);
 
-//    const filteredExams = exams.filter((exam) => {
-//     const matchesSearch = exam.course?.Name?.toLowerCase().includes(searchInput.toLowerCase());
-//     const matchesStatus = statusFilter ? exam.status === statusFilter : true;
-//     return matchesSearch && matchesStatus;
-//   });
+   const filteredExams = exams.filter((exam) => {
+    const matchesSearch = exam.course?.Name?.toLowerCase().includes(searchInput.toLowerCase());
+    const matchesStatus = statusFilter ? exam.status === statusFilter : true;
+    return matchesSearch && matchesStatus;
+  });
 
-    // let totalPages = Math.ceil(filteredExams.length / itemsPerPage);
+    let totalPages = Math.ceil(filteredExams.length / itemsPerPage);
 
     const prevPage = () => {
         if (currentPage >= 1) setCurrentPage(currentPage - 1);
     };
 
     const nextPage = () => {
-        if (currentPage < totalPages -1 ) setCurrentPage(currentPage + 1);
+        if (currentPage <= totalPages -1 ) setCurrentPage(currentPage + 1);
     };
 
     const openAddModal = () => {
         setEditingExam(null);
+         const generatedExamId = Date.now().toString(); // Generate examID once when modal opens
+         setNewExamId(generatedExamId); 
         setFormData({
             courseID: "",
+            courseName:"",
             bagCode: "",
             date: "",
             time: "",
             difficulty: 1,
             status: "Upcoming",
-            examType:"",
+            typeID:"",
         });
         setModalOpen(true);
     };
@@ -196,17 +232,17 @@ const ExamSchedule = () => {
     const openEditModal = (id) => {
         const exam = exams.find((e) => e.examID === id);
         if (exam) {
-            // const selectedCourse = courses.find((course) => course.courseID === exam.course?.courseID);
+            const selectedCourse = courses.find((course) => course.courseID === exam.course?.courseID);
             setEditingExam(id);
             setFormData({
-                courseID: exam.course.courseID,
-                // courseName : selectedCourse.name,   
-                bagCode :exam.bagCode,
-                date: exam.date,
-                time: exam.time,
-                difficulty: exam.difficulty,
-                status: exam.status,
-                examType: exam.examType.typeID,
+                courseID: exam.course.CourseID,
+                courseName : selectedCourse.Name,   
+                bagCode :exam.BagCode,
+                date: exam.Date,
+                time: exam.Time,
+                difficulty: exam.Difficulty,
+                status: exam.Status,
+                typeID: exam.examType.TypeID,
             });
             setModalOpen(true);
         }
@@ -225,6 +261,8 @@ const ExamSchedule = () => {
     const closeModal = () => {
         setModalOpen(false);
         setErrorMessage(""); // Clear error message when closing modal
+        setNewExamId(null); // Reset the newExamId when modal closes
+        setIsSubmitting(false); // Reset submitting state
     };
 
     const deleteExam = (id) => {
@@ -259,43 +297,30 @@ const ExamSchedule = () => {
 
   
 
-    // useEffect(()=>{
-    //     if(deleteBtn){
-    //         fetch(`https://localhost:8081/exams/${selectedExamId}` , 
-    //             {
-    //                 method : 'DELETE'
-    //             }
-    //         )
-    //         .then(() =>{
-    //             setExams((prev) => prev.filter((exam) => exam.examID !== selectedExamId));
-    //             setDeleteBtn(false);
-                
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //         })
-    //     }
-
-    // }, [deleteBtn]);
+    
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+         setIsSubmitting(true); // Disable the Save button
          const selectedCourse = {
           courseID: formData.courseID,
-          name: "",
+          name: formData.courseName,
           abbreviation: "",
        };
        const selectedExamType ={
-          examType: formData.typeID,
+          typeID : formData.typeID,
           name :"",
           description:"",
        };
+        // Ensure time is in HH:mm:ss format for java.sql.Time
+        const formattedTime = formData.time ? `${formData.time}:00` : formData.time;
+
 
         const newExam = {
-            examID: editingExam || Date.now().toString(),
+            examID: editingExam || newExamId,
             course : selectedCourse,
             date: formData.date,
-            time: formData.time,
+            time: formattedTime,
             difficulty: formData.difficulty,
             status: formData.status,
             bagCode: formData.bagCode,
@@ -310,6 +335,7 @@ const ExamSchedule = () => {
                 ? exams.find((exam) => exam.examID === editingExam).capacity || 0
                 : 0,
         };
+        console.log("Payload being sent:", JSON.stringify(newExam));
         // if (editingExam) {
         //     //update the existing exam
         //     fetch(`http://localhost:8081/exams/${editingExam}`, {
@@ -379,7 +405,9 @@ const ExamSchedule = () => {
       })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Could not ${editingExam ? "update" : "create"} the exam!`);
+          return response.json().then((err) => {
+            throw new Error(err.message || `Could not ${editingExam ? "update" : "create"} the exam!`);
+          });
         }
         console.log(`${editingExam ? "Update" : "Create"} successful for exam ID:`, newExam.examID);
         setEditBtn(true);
@@ -389,6 +417,7 @@ const ExamSchedule = () => {
         console.log(error);
       });
         setModalOpen(false);
+        setIsSubmitting(false);
     };
 
    
@@ -452,20 +481,66 @@ const ExamSchedule = () => {
          setErrorMessage(""); 
     };
 
-    const handleAssignmentSubmit = (e) => {
+    const handleAssignmentSubmit = async(e) => {
         e.preventDefault();
-        const updatedExams = exams.map((exam) => {
-            if (exam.examID === selectedExamId) {
-                return {
-                    ...exam,
-                    assignedStudents: assignmentData.selectedStudents,
-                    room: assignmentData.room,
-                    capacity: assignmentData.capacity,
-                };
-            }
-            return exam;
-        });
-        setExams(updatedExams);
+
+        try {
+            //assign selectedStudent to each exam 
+            const assignPromise = assignmentData.selectedStudents.map((personId)=>
+            fetch(`http://localhost:8081/persons/${personId}/exams/${selectedExamId}`,{
+                method : "PUT",
+                headers :{
+                    "Content-Type" :"application/json",
+                },
+                body: JSON.stringify({personID :personId}),
+            })
+            .then((response)=>{
+                if(!response.ok){
+                    throw new Error(`failed to assign exam to persons ${personId}`);
+                }
+                return response.json();
+            })
+         );
+
+           //wait for all assignment to complete 
+           await Promise.all(assignPromise);
+           console.log("all students assigned successfully for examID :" , selectedExamId);
+
+           //update exams' room
+           const updatedExam={
+              ...exams.find((exam) => exam.examID === selectedExamId),
+              rooms: [{roomName : assignmentData.room , capacity : assignmentData.capacity}],
+           };
+           const examUpdatedResponse = await fetch (`http://localhost:8081/exams/${selectedExamId}`,{
+              method : "PUT",
+              headers :{
+                 "Content-Type" : "application/json",
+              },
+              body:JSON.stringify(updatedExam),
+           });
+
+           if(!examUpdatedResponse.ok){
+                throw new Error("failed to assign student to exam");
+           }
+           console.log("Exam rooms update successfully for examid :" , selectedExamId);
+           setAssignBtn(true);
+            
+        } catch (error) {
+            console.log(error);
+        }
+        // const updatedExams = exams.map((exam) => {
+        //     if (exam.examID === selectedExamId) {
+        //         return {
+        //             ...exam,
+        //             assignedStudents: assignmentData.selectedStudents,
+        //             room: assignmentData.room,
+        //             capacity: assignmentData.capacity,
+        //         };
+        //     }
+        //     return exam;
+        // });
+        // setExams(updatedExams);
+        // setAssignmentModalOpen(false);
         setAssignmentModalOpen(false);
     };
 
@@ -489,23 +564,20 @@ const ExamSchedule = () => {
                 if (!response.ok) {
                     throw new Error("Failed to update difficulty");
                 }
-                return response.json();
+                console.log("Difficulty update successful for exam ID:", examId);
+                setEditBtn(true);
             })
-            .then((updatedExamFromServer) => {
-                setExams(exams.map((exam) => exam.examID === examId ? updatedExamFromServer : exam));
-            })
+            // .then((updatedExamFromServer) => {
+            //     setExams(exams.map((exam) => exam.examID === examId ? updatedExamFromServer : exam));
+            // })
             .catch((error) => {
                 console.error("Update error:", error);
             });
     };
 
-    const filteredExams = exams.filter((exam) => {
-    const matchesSearch = exam.course?.Name?.toLowerCase().includes(searchInput.toLowerCase());
-    const matchesStatus = statusFilter ? exam.Status === statusFilter : true;
-    return matchesSearch && matchesStatus;
-  });
+   
 
-    // console.log(filteredExams);
+    console.log(filteredExams);
 
     return (
         <div className={styles.container}>
@@ -609,7 +681,8 @@ const ExamSchedule = () => {
                     <div className={styles.modalContent}>
                         <h2>{editingExam ? "Edit Exam" : "Add New Exam"}</h2>
                         <form onSubmit={handleFormSubmit}>
-                            <input
+                            
+                            {/* <input
                                 type="text"
                                 placeholder="Subject"
                                 required
@@ -617,7 +690,21 @@ const ExamSchedule = () => {
                                 onChange={(e) =>
                                     setFormData({...formData,courseID: e.target.value})
                                 }
-                            />
+                            /> */}
+                            <select
+                                required
+                               value={formData.courseID}
+                               onChange={(e) => 
+                                   setFormData({ ...formData, courseID: e.target.value })
+                               }
+                            >
+                               <option value="">Select a Course</option>
+                               {courses.map((course) => (
+                                  <option key={course.courseID} value={course.courseID}>
+                                  {course.name} (ID: {course.courseID})
+                                  </option>
+                               ))}
+                            </select>
                             <input
                                 type="date"
                                 required
@@ -654,9 +741,31 @@ const ExamSchedule = () => {
                                 <option value="Completed">Completed</option>
                                 <option value="Cancelled">Cancelled</option>
                             </select>
+                            <input
+                                type="text"
+                                placeholder="Bag Code"
+                               value={formData.bagCode}
+                               onChange={(e) => 
+                                      setFormData({ ...formData, bagCode: e.target.value })
+                                }
+                            />
+                            <select
+                               required
+                               value={formData.typeID}
+                               onChange={(e) => 
+                                     setFormData({ ...formData, typeID: e.target.value })
+                               }
+                            >
+                                <option value="">Select Exam Type</option>
+                                {testTypes.map((type) => (
+                                    <option key={type.typeID} value={type.typeID}>
+                                     {type.name} (ID: {type.typeID})
+                                      </option>
+                                ))}
+                            </select>
                             <div className={styles.modalButtons}>
                                 <button type="submit">Save</button>
-                                <button type="button" onClick={closeModal}>
+                                <button type="button" onClick={closeModal} disabled ={isSubmitting}>
                                     Cancel
                                 </button>
                             </div>
@@ -672,7 +781,37 @@ const ExamSchedule = () => {
                             <div>
                                 <label>Select Students:</label>
                                 <div className={styles.studentsList}>
-                                    {availableStudents.map((student) => (
+                                    {students.length > 0 ? (
+                                        students.map((student)=>(
+                                            <div key = {student.personID}>
+                                             <input
+                                             type = "checkbox"
+                                             id ={student.personID}
+                                             value ={student.personID}
+                                             checked ={assignmentData.selectedStudents.includes(student.personID)}
+                                             onChange={(e) =>{
+                                                 const value = e.target.value;
+                                                 let updated;
+                                                 if(e.target.checked){
+                                                    updated = [...assignmentData.selectedStudents,value];
+                                                 } else{
+                                                    updated = assignmentData.selectedStudents.filter((s)=> s!== value);
+                                                 }
+                                              setAssignmentData({
+                                                ...assignmentData,
+                                                selectedStudents :updated
+                                              });
+                                             }}
+                                        />
+                                            <label htmlFor={student.personID}>
+                                                {student.personID} -{student.firstName || "N/A"} {student.lastName || "N/A"}
+                                            </label>
+                                          </div>
+                                        ))
+                                      ) : (
+                                        <div> No Students Available </div>
+                                    )}
+                                    {/* {availableStudents.map((student) => (
                                         <div key={student}>
                                             <input
                                                 type="checkbox"
@@ -702,7 +841,7 @@ const ExamSchedule = () => {
                                             />
                                             <label htmlFor={student}>{student}</label>
                                         </div>
-                                    ))}
+                                    ))} */}
                                 </div>
                             </div>
                             <div>

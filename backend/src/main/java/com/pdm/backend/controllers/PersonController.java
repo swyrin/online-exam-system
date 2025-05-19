@@ -81,7 +81,7 @@ public class PersonController {
     }
 
     @DeleteMapping(path = "/persons/{person_id}")
-    public ResponseEntity<PersonDto> delete(@PathVariable("person_id") String person_id) {
+    public ResponseEntity delete(@PathVariable("person_id") String person_id) {
         personServices.delete(person_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 

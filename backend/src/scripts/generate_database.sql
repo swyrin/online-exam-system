@@ -85,7 +85,7 @@ create table if not exists test_types
 
 create table if not exists exams
 (
-    exam_id           bigint       not null primary key,
+     exam_id           VARCHAR(255)  NOT NULL PRIMARY KEY,
     bag_code          varchar(255) null,
     status            varchar(255) null,
     course_course_id  varchar(255) null,
@@ -100,7 +100,7 @@ create table if not exists exams
 create table if not exists exam_room
 (
     room_id varchar(255) not null,
-    exam_id bigint       not null,
+    exam_id varchar(255)       not null,
     primary key (room_id, exam_id),
     constraint FKdg4594dtjjcb61168obpt03fq foreign key (exam_id) references exams (exam_id) on delete cascade,
     constraint FKtfo6emql9pum6ciwftry40qg7 foreign key (room_id) references rooms (room_id) on delete cascade
@@ -109,7 +109,7 @@ create table if not exists exam_room
 create table if not exists person_exam
 (
     person_id varchar(255) not null,
-    exam_id   bigint       not null,
+    exam_id   varchar(255)       not null,
     primary key (person_id, exam_id),
     constraint FK7qkp42jcnnybjqg65s9n70fno foreign key (person_id) references persons (person_id) on delete cascade,
     constraint FKl26fpy2amha5oj47hdh9ev5s1 foreign key (exam_id) references exams (exam_id) on delete cascade

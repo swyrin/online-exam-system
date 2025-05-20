@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { v4 as uuidv4 } from 'uuid';
 import styles from "./ExamSchedule.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -59,16 +60,7 @@ const ExamSchedule = () => {
         capacity: "",
     });
 
-    const availableStudents = [
-        "John Doe",
-        "Jane Smith",
-        "Michael Brown",
-        "Emily Davis",
-        "Chris Johnson",
-        "Sophia Lee",
-        "David Wilson",
-        "Amelia Moore",
-    ];
+    
 
     const itemsPerPage = 10;
     // const initialExam = async (page =0 , size = itemsPerPage) =>{
@@ -153,8 +145,8 @@ const ExamSchedule = () => {
                 });
                 // console.log(inner)
                 setExams(inner || []);
-                setTotalPages(res.totalPages || 1);
-                setExams(res.content );
+               
+               
                 totalPages = res.totalPages;
             })
             .catch((error) =>{
@@ -230,7 +222,7 @@ const ExamSchedule = () => {
 
     const openAddModal = () => {
         setEditingExam(null);
-         const generatedExamId = Date.now().toString(); // Generate examID once when modal opens
+         const generatedExamId = uuidv4(); // Generate examID once when modal opens
          setNewExamId(generatedExamId); 
         setFormData({
             courseID: "",
@@ -264,14 +256,14 @@ const ExamSchedule = () => {
         }
     };
 
-//     const handleCourseChange = (courseID) => {
-//     const selectedCourse = courses.find((course) => course.courseID === courseID);
-//     setFormData({
-//       ...formData,
-//       courseID: courseID,
-//       courseName: selectedCourse ? selectedCourse.name : "",
-//      });
-//    };
+  const handleCourseChange = (courseID) => {
+    const selectedCourse = courses.find((course) => course.courseID === courseID);
+    setFormData({
+      ...formData,
+      courseID: courseID,
+      courseName: selectedCourse ? selectedCourse.name : "",
+    });
+  };
 
 
     const closeModal = () => {
@@ -314,33 +306,35 @@ const ExamSchedule = () => {
 
     
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-         setIsSubmitting(true); // Disable the Save button
-         const selectedCourse = {
-          courseID: formData.courseID,
-          name: formData.courseName,
-          abbreviation: "",
-       };
-       const selectedExamType ={
-          typeID : formData.typeID,
-          name :"",
-          description:"",
-       };
-        // Ensure time is in HH:mm:ss format for java.sql.Time
-        const formattedTime = formData.time ? `${formData.time}:00` : formData.time;
+    const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true); // Disable the Save button
+
+    const selectedCourse = {
+      courseID: formData.courseID,
+      name: formData.courseName,
+      abbreviation: "",
+    };
+    const selectedExamType = {
+        typeID :formData.typeID,
+        name: "",
+        description:"",
+
+    };
 
 
-        const newExam = {
-            examID: editingExam || newExamId,
-            course : selectedCourse,
-            date: formData.date,
-            time: formattedTime,
-            difficulty: formData.difficulty,
-            status: formData.status,
-            bagCode: formData.bagCode,
-            examType: selectedExamType,
-            assignedStudents: editingExam
+    const formattedTime = formData.time ? `${formData.time}:00` : formData.time;
+
+    const newExam = {
+      examID: editingExam || newExamId, 
+      course: selectedCourse,
+      date: formData.date,
+      time: formattedTime,
+      difficulty: formData.difficulty,
+      status: formData.status,
+      bagCode: formData.bagCode,
+      examType: selectedExamType,
+       assignedStudents: editingExam
                 ? exams.find((exam) => exam.examID === editingExam).assignedStudents || []
                 : [],
             room: editingExam
@@ -349,91 +343,39 @@ const ExamSchedule = () => {
             capacity: editingExam
                 ? exams.find((exam) => exam.examID === editingExam).capacity || 0
                 : 0,
-        };
-        console.log("Payload being sent:", JSON.stringify(newExam));
-        // if (editingExam) {
-        //     //update the existing exam
-        //     fetch(`http://localhost:8081/exams/${editingExam}`, {
-        //         method: "PUT",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(newExam),
+    };
 
-        //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error("Could not update the following exam!");
-        //             }
-        //            return response.json();// Re-fetch to sync with server
-                   
-        //         })
-        //         .then(updatedExams => {
-        //             setExams(
-        //                 exams.map((exam) => exam.examID === editingExam ? updatedExams : exam)
-        //             );
-        //              setModalOpen(false);
-        //              initialExam(currentPage); 
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         });
-        //         initialExam(currentPage);
+    console.log("Payload being sent:", JSON.stringify(newExam));
 
-        // } else {
-        //     //if exam does not exist => create
-        //     fetch(`http://localhost:8081/exams`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(newExam),
-        //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error("Could not create the exam !");
-        //             }
-        //            return response.json();
-                   
-        //         })
-        //         .then(savedExam => {
-        //              setExams([...exams, savedExam]);
-        //              setModalOpen(false);
-        //              initialExam(currentPage); // Re-fetch to sync with server
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         })
-        //         initialExam(currentPage);
-        // }
-         const method = editingExam ? "PUT" : "POST";
-         const url = editingExam
-            ? `http://localhost:8081/exams/${editingExam}`
-            : `http://localhost:8081/exams`;
+    const method = editingExam ? "PUT" : "POST";
+    const url = editingExam
+      ? `http://localhost:8081/exams/${editingExam}`
+      : `http://localhost:8081/exams`;
 
-        fetch(url, {
+    try {
+      const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newExam),
-      })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((err) => {
-            throw new Error(err.message || `Could not ${editingExam ? "update" : "create"} the exam!`);
-          });
-        }
-        console.log(`${editingExam ? "Update" : "Create"} successful for exam ID:`, newExam.examID);
-        setEditBtn(true);
-        
-      })
-      .catch((error) => {
-        console.log(error);
       });
-        setModalOpen(false);
-        setIsSubmitting(false);
-    };
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || `Could not ${editingExam ? "update" : "create"} the exam!`);
+      }
+
+      console.log(`${editingExam ? "Update" : "Create"} successful for exam ID:`, newExam.examID);
+      setEditBtn(true);
+    } catch (error) {
+      console.log(`${editingExam ? "Update" : "Create"} error:`, error.message);
+      setErrorMessage(error.message || "Failed to save exam. Please check the course ID.");
+    } finally {
+      setModalOpen(false);
+      setIsSubmitting(false); 
+    }
+  };
 
    
 
@@ -706,11 +648,11 @@ const ExamSchedule = () => {
                                     setFormData({...formData,courseID: e.target.value})
                                 }
                             /> */}
-                            <select
+                            {/* <select
                                 required
                                value={formData.courseID}
                                onChange={(e) => 
-                                   setFormData({ ...formData, courseID: e.target.value })
+                                   handleCourseChange(e.target.value)
                                }
                             >
                                <option value="">Select a Course</option>
@@ -720,6 +662,59 @@ const ExamSchedule = () => {
                                   </option>
                                ))}
                             </select>
+                            <div>
+                                <label>Course Name:</label>
+                                <input
+                                        type="text"
+                                        value={formData.courseName}
+                                        disabled
+                                />
+                            </div> */}
+                            {editingExam ? (
+                <>
+                  <select
+                    required
+                    value={formData.courseID}
+                    onChange={(e) => handleCourseChange(e.target.value)}
+                  >
+                    <option value="">Select a Course</option>
+                    {courses.map((course) => (
+                      <option key={course.courseID} value={course.courseID}>
+                        {course.name} (ID: {course.courseID})
+                      </option>
+                    ))}
+                  </select>
+                  <div>
+                    <label>Course Name:</label>
+                    <input
+                      type="text"
+                      value={formData.courseName}
+                      disabled
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label>Course ID:</label>
+                    <input
+                      type="text"
+                      value={formData.courseID}
+                      onChange={(e) => setFormData({ ...formData, courseID: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label>Course Name:</label>
+                    <input
+                      type="text"
+                      value={formData.courseName}
+                      onChange={(e) => setFormData({ ...formData, courseName: e.target.value })}
+                      required
+                    />
+                  </div>
+                </>
+              )}
                             <input
                                 type="date"
                                 required
@@ -779,8 +774,10 @@ const ExamSchedule = () => {
                                 ))}
                             </select>
                             <div className={styles.modalButtons}>
-                                <button type="submit">Save</button>
-                                <button type="button" onClick={closeModal} disabled ={isSubmitting}>
+                                 <button type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? "Saving..." : "Save"}
+                                 </button>
+                                 <button type="button" onClick={closeModal} disabled={isSubmitting}>
                                     Cancel
                                 </button>
                             </div>

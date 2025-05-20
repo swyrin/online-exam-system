@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class ExamController {
@@ -24,6 +25,9 @@ public class ExamController {
     @PostMapping(path = "/exams")
     public ResponseEntity<ExamDto> createExam(@RequestBody ExamDto examDto){
            Exam exam = examMapper.mapfrom(examDto);
+           if (examServices.isExist(exam.getExamID())) {
+          throw new ResponseStatusException(HttpStatus.CONFLICT, "An exam with this ID already exists.");
+        }
            Exam createdExam = examServices.saveExam( exam);
            return new ResponseEntity<>(examMapper.mapto(createdExam) , HttpStatus.CREATED);
     }

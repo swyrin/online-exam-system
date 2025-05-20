@@ -16,9 +16,9 @@ import java.util.Set;
 @Setter
 public class Exam {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "exam_id_seq")
+    
     @Column(name = "exam_id")
-    private Long ExamID;
+    private String ExamID;
 
     @Column(name = "date")
     private Date Date;

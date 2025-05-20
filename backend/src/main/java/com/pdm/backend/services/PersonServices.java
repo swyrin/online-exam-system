@@ -23,7 +23,7 @@ public interface PersonServices {
 
     Person assignCourseToPerson(String person_id, String course_id);
 
-    Person assignExamToPerson(String person_id, long exam_id);
+    Person assignExamToPerson(String person_id, String exam_id);
 
     Person setPersonReports(String person_id, String course_id);
 

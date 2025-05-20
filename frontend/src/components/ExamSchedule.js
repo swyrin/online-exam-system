@@ -31,7 +31,7 @@ const ExamSchedule = () => {
     const [courses, setCourses] = useState([]);
     const [students, setStudents] = useState([]); // New state for students
     const [currentPage, setCurrentPage] = useState(0);
-    // const [totalPages , setTotalPages] = useState(1);
+    const [totalPages , setTotalPages] = useState(1);
     const [editBtn , setEditBtn] = useState(false);
     const [deleteBtn , setDeleteBtn] = useState(false);
     const [assignBtn , setAssignBtn] = useState(false);
@@ -131,7 +131,8 @@ const ExamSchedule = () => {
         fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`)
             .then(res => res.json())
             .then(res => {
-                let inner = res.content; 
+                let inner = res.content;
+                console.log(res) 
                 console.log(res.content)
                 inner = inner.filter((exam) => {
                     // console.log(exam)
@@ -145,9 +146,8 @@ const ExamSchedule = () => {
                 });
                 // console.log(inner)
                 setExams(inner || []);
-               
-               
-                totalPages = res.totalPages;
+
+                setTotalPages(res.page.totalPages);
             })
             .catch((error) =>{
                 console.log(error);
@@ -209,7 +209,7 @@ const ExamSchedule = () => {
     return matchesSearch && matchesStatus;
   });
 
-    let totalPages = Math.ceil(filteredExams.length / itemsPerPage);
+    // let totalPages = Math.ceil(filteredExams.length / itemsPerPage);
 
     const prevPage = () => {
         setCurrentPage(currentPage - 1);
@@ -217,7 +217,7 @@ const ExamSchedule = () => {
 
     const nextPage = () => {
         setCurrentPage(currentPage + 1);
-        if (currentPage <= totalPages -1 ) setCurrentPage(currentPage + 1);
+        // if (currentPage <= totalPages -1 ) setCurrentPage(currentPage + 1);
     };
 
     const openAddModal = () => {
@@ -398,7 +398,7 @@ const ExamSchedule = () => {
     const openAssignmentModal = (examId) => {
         setSelectedExamId(examId);
         // setAssignmentData({selectedStudents: [], room: "", capacity: ""});
-        const exam = exams.find((e) => e.examID === examId);
+    const exam = exams.find((e) => e.examID === examId);
       setAssignmentData({
         selectedStudents: exam?.assignedStudents || [],
         room: exam?.room || "",
@@ -574,7 +574,7 @@ const ExamSchedule = () => {
                 <table>
                     <thead>
                     <tr>
-                        <th>Exam ID</th>
+                        {/* <th>Exam ID</th> */}
                         <th>Subject</th>
                         <th>Date</th>
                         <th>Time</th>
@@ -590,14 +590,14 @@ const ExamSchedule = () => {
                     {exams && exams.map((exam) => {
                         return (
                             <tr key={exam.examID}>
-                                <td>{exam.examID}</td>
+                                {/* <td>{exam.examID}</td> */}
                                <td>{`${exam.course.courseID} - ${exam.course.name}`}</td>
                                 <td>{exam.date}</td>
                                 <td>{exam.time}</td>
                                 <td>{renderStars(exam.difficulty, exam.examID)}</td>
                                 <td>{exam.status}</td>
-                               <td>{exam.rooms[0].RoomID}</td>
-                               <td>{exam.rooms[0].headcount}</td>
+                               <td>{exam.rooms[0]?.roomID !== undefined ? exam.rooms[0].roomID : "N/A"}</td>
+                               <td>{exam.rooms[0]?.headcount !== undefined ? exam.rooms[0].headcount : "N/A"}</td>
                                <td>{exam.attendees.length}</td>
                                 <td>
                                     <button
@@ -629,7 +629,7 @@ const ExamSchedule = () => {
                 <button onClick={prevPage} disabled={currentPage === 0}>
                     Previous
                 </button>
-                <button onClick={nextPage} disabled={currentPage === totalPages}>
+                <button onClick={nextPage} disabled={currentPage === totalPages - 1}>
                     Next
                 </button>
             </div>

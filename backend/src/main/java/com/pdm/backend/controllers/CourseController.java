@@ -10,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -41,13 +44,13 @@ public class CourseController {
     }
 
     @GetMapping("/courses")
-    public Page<CoursesDto> courseList(Pageable pageable){
+    public List<CoursesDto> courseList(Pageable pageable){
         Page<Course> course = courseServices.findAll(pageable);
-        return course.map(courseMapper::mapto);
+      return course.getContent().stream().map(courseMapper::mapto).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/courses/{course_id}")
-    public ResponseEntity<CoursesDto> getCourse(@PathVariable("course_id") String course_id, CoursesDto CoursesDto) {
+    public ResponseEntity<CoursesDto> getCourse(@PathVariable("course_id") String course_id,@RequestBody CoursesDto CoursesDto) {
 
 
         Optional<Course> foundCourse = courseServices.findOne(course_id);

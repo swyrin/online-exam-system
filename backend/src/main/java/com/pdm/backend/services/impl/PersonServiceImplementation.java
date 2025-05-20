@@ -82,7 +82,7 @@ public class PersonServiceImplementation implements PersonServices {
     }
 
     @Override
-    public Person assignExamToPerson(String person_id, long exam_id) {
+    public Person assignExamToPerson(String person_id, String exam_id) {
         Set<Exam> examAssigned = null;
         Person personEntity = personRepository.findById(person_id).get();
         Exam examEntity = examRepository.findById(exam_id).get();

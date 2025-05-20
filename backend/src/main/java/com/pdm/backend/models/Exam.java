@@ -16,8 +16,9 @@ import java.util.Set;
 @Setter
 public class Exam {
     @Id
+    
     @Column(name = "exam_id")
-    private Long ExamID;
+    private String ExamID;
 
     @Column(name = "date")
     private Date Date;
@@ -30,6 +31,9 @@ public class Exam {
 
     @Column(name = "bag_code")
     private String BagCode;
+
+    @Column(name = "status")
+    private String Status;
 
     @ManyToOne
     private Course Course;

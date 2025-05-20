@@ -70,7 +70,7 @@ public class RoomServiceImple implements RoomServices {
     }
 
     @Override
-    public Room assignExamToRoom(String room_id, long exam_id) {
+    public Room assignExamToRoom(String room_id, String exam_id) {
         Set<Exam> exams = null;
         Room roomEntity = roomRepository.findById(room_id).get();
         Exam examEntity = examRepository.findById(exam_id).get();

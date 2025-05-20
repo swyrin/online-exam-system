@@ -19,18 +19,18 @@ public class ExamServiceImple implements ExamServices {
     }
 
     @Override
-    public Exam saveExam(long exam_id, Exam exam) {
-        exam.setExamID(exam_id);
+    public Exam saveExam( Exam exam) {
+       
         return examRepository.save(exam);
     }
 
     @Override
-    public Optional<Exam> findOne(long exam_id) {
+    public Optional<Exam> findOne(String exam_id) {
         return examRepository.findById(exam_id);
     }
 
     @Override
-    public Boolean isExist(long exam_id) {
+    public Boolean isExist(String exam_id) {
         return examRepository.existsById(exam_id);
     }
 
@@ -41,7 +41,7 @@ public class ExamServiceImple implements ExamServices {
 
 
     @Override
-    public void delete(long exam_id) {
+    public void delete(String exam_id) {
         examRepository.deleteById(exam_id);
     }
 

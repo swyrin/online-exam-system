@@ -17,8 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ExamDto {
-    private Long ExamID;
+    private String ExamID;
     private String BagCode;
+    private String Status;
     private Date Date;
     private Time Time;
     private Short Difficulty;

@@ -21,7 +21,7 @@ public interface RoomServices {
 
     void delete(String room_id);
 
-    Room assignExamToRoom(String room_id, long exam_id);
+    Room assignExamToRoom(String room_id, String exam_id);
 
     Room assignPersonToRoom(String room_id, String person_id, Room room);
 

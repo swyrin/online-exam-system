@@ -81,7 +81,7 @@ public class PersonController {
     }
 
     @DeleteMapping(path = "/persons/{person_id}")
-    public ResponseEntity<PersonDto> delete(@PathVariable("person_id") String person_id) {
+    public ResponseEntity delete(@PathVariable("person_id") String person_id) {
         personServices.delete(person_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
@@ -109,7 +109,7 @@ public class PersonController {
     @PutMapping(path = "/persons/{person_id}/exams/{exam_id}")
     public ResponseEntity<PersonDto> assignExamsToPerson(
             @PathVariable("person_id") String person_id,
-            @PathVariable("exam_id") long exam_id,
+            @PathVariable("exam_id") String exam_id,
             @RequestBody PersonDto personDto) {
         boolean foundPersonID = personServices.isExist(person_id);
         boolean foundExamID = examServices.isExist(exam_id);

@@ -27,6 +27,7 @@ const StarRating = ({rating, onRatingChange}) => {
 
 const ExamSchedule = () => {
     const [exams, setExams] = useState([]);
+    const [shouldRefresh, setShouldRefresh] = useState(false);
     const [testTypes, setTestTypes] = useState([]);
     const [courses, setCourses] = useState([]);
     const [students, setStudents] = useState([]); // New state for students
@@ -148,19 +149,20 @@ const ExamSchedule = () => {
                 setExams(inner || []);
 
                 setTotalPages(res.page.totalPages);
+                setShouldRefresh(false);
             })
             .catch((error) =>{
                 console.log(error);
             })
-    }, [currentPage, statusFilter, searchInput]);
+    }, [currentPage, statusFilter, searchInput, formData]);
 
     useEffect(()=>{
         if(deleteBtn){
-            fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`)
+            fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`, { method: "DELETE" })
             .then(res => res.json())
             .then(res => {
                 setExams(res.content);
-                totalPages = res.totalPages;
+                setTotalPages(res.totalPages);
                 setDeleteBtn(false);
                 console.log("Fetched after delete:", res.content);
                 setErrorMessage(""); 
@@ -173,11 +175,11 @@ const ExamSchedule = () => {
 
     useEffect(()=>{
         if(editBtn){
-        fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`)
+        fetch(`http://localhost:8081/exams?page=${currentPage}&size=${itemsPerPage}`, { method: "PUT" })
             .then(res => res.json())
             .then(res => {
                 setExams(res.content );
-                totalPages = res.totalPages;
+                setTotalPages(res.pages.totalPages);
                 setEditBtn(false);
                 console.log("Fetched after edit:", res.content);
             })
@@ -193,7 +195,7 @@ const ExamSchedule = () => {
             .then(res => res.json())
             .then((res) => {
                 setExams(res.content);
-                totalPages = res.totalPages;
+                setTotalPages(res.totalPages);
                 setAssignBtn(false);
                 console.log("Fetched after assign:", res.content);
             })

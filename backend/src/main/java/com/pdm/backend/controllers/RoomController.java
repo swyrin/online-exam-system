@@ -97,7 +97,7 @@ public class RoomController {
     @PutMapping(path = "/rooms/{room_id}/exams/{exam_id}")
     public ResponseEntity<RoomDto> assignExamsToRoom(
             @PathVariable("room_id") String room_id,
-            @PathVariable("exam_id") long exam_id,
+            @PathVariable("exam_id") String exam_id,
             @RequestBody RoomDto roomDto
     ) {
         boolean foundRoomID = roomServices.isExist(room_id);

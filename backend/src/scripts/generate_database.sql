@@ -85,7 +85,7 @@ create table if not exists test_types
 
 create table if not exists exams
 (
-     exam_id           VARCHAR(255)  NOT NULL PRIMARY KEY,
+    exam_id           VARCHAR(255)  NOT NULL PRIMARY KEY,
     bag_code          varchar(255) null,
     status            varchar(255) null,
     course_course_id  varchar(255) null,

@@ -33,7 +33,7 @@ public class ExamController {
     }
 
     @PutMapping(path = "/exams/{exam_id}")
-    public ResponseEntity<ExamDto> UpdateExam(@PathVariable("exam_id") long exam_id, @RequestBody ExamDto examDto) {
+    public ResponseEntity<ExamDto> UpdateExam(@PathVariable("exam_id") String exam_id, @RequestBody ExamDto examDto) {
         Exam exam = examMapper.mapfrom(examDto);
         boolean isExamExist = examServices.isExist(exam_id);
         
@@ -59,7 +59,7 @@ public class ExamController {
     }
 
     @GetMapping(path = "/exams/{exam_id}")
-    public ResponseEntity<ExamDto> getExam(@PathVariable("exam_id") long exam_id,  ExamDto examDto) {
+    public ResponseEntity<ExamDto> getExam(@PathVariable("exam_id") String exam_id,  ExamDto examDto) {
         boolean foundExamID = examServices.isExist(exam_id);
         if (!foundExamID) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -71,7 +71,7 @@ public class ExamController {
     }
 
     @DeleteMapping(path = "/exams/{exam_id}")
-    public ResponseEntity<ExamDto> delete(@PathVariable("exam_id") long exam_id) {
+    public ResponseEntity<ExamDto> delete(@PathVariable("exam_id") String exam_id) {
         examServices.delete(exam_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

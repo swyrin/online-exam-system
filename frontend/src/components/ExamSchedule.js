@@ -366,10 +366,10 @@ const ExamSchedule = () => {
         throw new Error(err.message || `Could not ${editingExam ? "update" : "create"} the exam!`);
       }
 
-      console.log(`${editingExam ? "Update" : "Create"} successful for exam ID:`, newExam.examID);
+      alert(`${editingExam ? "Update" : "Create"} successful for exam ID:`, newExam.examID);
       setEditBtn(true);
     } catch (error) {
-      console.log(`${editingExam ? "Update" : "Create"} error:`, error.message);
+      alert(`${editingExam ? "Update" : "Create"} error:`, error.message);
       setErrorMessage(error.message || "Failed to save exam. Please check the course ID.");
     } finally {
       setModalOpen(false);
@@ -816,7 +816,7 @@ const ExamSchedule = () => {
                                              }}
                                         />
                                             <label htmlFor={student.personID}>
-                                                {student.personID} -{student.firstName || "N/A"} {student.lastName || "N/A"}
+                                                {student.personID} - {student.firstName || "N/A"} {student.lastName || "N/A"}
                                             </label>
                                           </div>
                                         ))
